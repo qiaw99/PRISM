@@ -1,26 +1,20 @@
-## Education
+# Education Background 👨‍🎓
 
-**The University of Example**, PhD in Natural Science, *2025 - Present*
-- Research focus: Mathematical Principles of Natural Philosophy
-- Supervisor: Prof. Advisor One and Dr. Advisor Two
+2024.07-ongoing: Computer Science, Ph.D., Technische Universität Berlin. Supervised by Prof. Dr. Sebastian Möller.
 
-**The University of Example**, BSc in Natural Science, *2021 - 2025*
-- Graduated with First Class Honours
+2025.09: Visiting PhD Student, University of Copenhagen. Supervised by Prof. Dr. Isabelle Augenstein.
 
-## Experience
+2021.10-2023.10: Computer Science, M.Sc., Technische Universität Berlin. Supervised by [Dr.-Ing. Nils Feldhus](https://nfelnlp.github.io/) and [Dr.-Ing. Leonhard Hennig](https://www.dfki.de/web/ueber-uns/mitarbeiter/person/lehe02): _A Singular LLM is all you need for dialogue-based explanation regarding NLP tasks_.
 
-**Example Role**
-Company/Institution
-*2023 - 2024*
-- Description of key responsibilities and achievements.
-- Utilized skills to solve problems.
+2018.10-2021.09: Computer Science, B.Sc., Freie Universität Berlin. Supervised by [Prof. Dr. László Kozma](https://www.mi.fu-berlin.de/inf/groups/ag-ti/members/professoren/Kozma_Laszlo.html): _Understanding and implementation of the algorithm for three-coloring in triangle-free planar graphs_.
 
-## Skills
 
-- **Programming:** Python, C++, MATLAB, LaTeX
-- **Data Analysis:** Pandas, NumPy, SciPy
-- **Languages:** English (Native), French (Fluent)
+# Jobs 🧑‍💻
+2024.07 - ongoing: NLP Researcher @ Quality and Usability Lab, Technische Universität Berlin, Berlin, Germany; funded by [VERANDA](https://njctn.github.io/VERANDA/) project.
 
-## Awards & Honors
+2024.07 - ongoing: Guest Researcher @ German Research Center for Artificial Intelligence (DFKI) - [SLT Group](https://www.dfki.de/en/web/research/research-departments/speech-and-language-technology/), Berlin, Germany.
 
-- **First Prize in Example Competition** - Committee of Example (*2024*)
+2024.01 - 2024.05: Machine Learning Researcher @ Aptiv, Wuppertal, Germany.
+
+2023.01 - 2024.01: Research Assistant @ German Research Center for Artificial Intelligence (DFKI) - [SLT Group](https://www.dfki.de/en/web/research/research-departments/speech-and-language-technology/), Berlin, Germany.
+

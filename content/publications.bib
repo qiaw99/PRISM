@@ -1,89 +1,239 @@
-@article{liu2024stability,
-  selected={true},
-  title = {Numerical Stability Analysis of High-Order Runge-Kutta Methods in Quantum Dynamics},
-  author = {Jiale Liu and Sarah O'Connor*},
-  year = {2024},
-  month = mar,
-  journal = {Journal of Computational Physics},
-  volume = {450},
-  pages = {110832},
-  issn = {0021-9991},
-  doi = {10.1016/j.jcp.2023.110832},
-  urldate = {2024-12-02},
-  langid = {english},
-  abstract = {The precise time-evolution of quantum systems is a cornerstone of computational physics. This paper investigates the numerical stability of high-order Runge-Kutta (RK) methods when applied to the time-dependent Schrödinger equation. We derive rigorous stability boundaries for symplectic and non-symplectic RK integrators and demonstrate that specific implicit schemes preserve unitarity over extended simulation times. By analyzing the spectral properties of the Hamiltonian operator, we establish a relationship between the Courant-Friedrichs-Lewy (CFL) condition and the imaginary eigenvalues characteristic of quantum propagators. Our findings are validated through simulations of wave packet scattering and harmonic oscillator dynamics, showing that our proposed optimized RK coefficients significantly reduce phase error accumulation compared to standard integrators.},
-  description={A rigorous analysis of numerical stability boundaries for high-order Runge-Kutta integrators in the context of time-dependent quantum mechanics.},
-  keywords={Computational Physics, Quantum Dynamics, Numerical Analysis, Runge-Kutta Methods}
+@inproceedings{wang-etal-2025-cross,
+    selected={true},
+    title = "Cross-Refine: Improving Natural Language Explanation Generation by Learning in Tandem",
+    author = {Wang, Qianli  and
+      Anikina, Tatiana  and
+      Feldhus, Nils  and
+      Ostermann, Simon  and
+      Möller, Sebastian  and
+      Schmitt, Vera},
+    editor = "Rambow, Owen  and
+      Wanner, Leo  and
+      Apidianaki, Marianna  and
+      Al-Khalifa, Hend  and
+      Eugenio, Barbara Di  and
+      Schockaert, Steven",
+    code = {https://github.com/qiaw99/Cross-Refine},
+    booktitle = "Proceedings of the 31st International Conference on Computational Linguistics",
+    month = jan,
+    year = "2025",
+    address = "Abu Dhabi, UAE",
+    publisher = "Association for Computational Linguistics",
+    url = "https://aclanthology.org/2025.coling-main.77/",
+    pages = "1150--1167",
+    preview = {cross.png},
+    abstract = {Natural language explanations (NLEs) are vital for elucidating the reasoning behind large language model (LLM) decisions. Many techniques have been developed to generate NLEs using LLMs. However, like humans, LLMs might not always produce optimal NLEs on first attempt. Inspired by human learning processes, we introduce Cross-Refine, which employs role modeling by deploying two LLMs as generator and critic, respectively. The generator outputs a first NLE and then refines this initial explanation using feedback and suggestions provided by the critic. Cross-Refine does not require any supervised training data or additional training. We validate Cross-Refine across three NLP tasks using three state-of-the-art open-source LLMs through automatic and human evaluation. We select Self-Refine (Madaan et al., 2023) as the baseline, which only utilizes self-feedback to refine the explanations. Our findings from automatic evaluation and a user study indicate that Cross-Refine outperforms Self-Refine. Meanwhile, Cross-Refine can perform effectively with less powerful LLMs, whereas Self-Refine only yields strong results with ChatGPT. Additionally, we conduct an ablation study to assess the importance of feedback and suggestions. Both of them play an important role in refining explanations. We further evaluate Cross-Refine on a bilingual dataset in English and German.},
 }
 
-@inproceedings{smith2024constructive,
-  title = {A Constructive Proof of the Generalized Riemann Hypothesis for Function Fields over Finite Constants},
-  booktitle = {Proceedings of the 2024 International Congress of Mathematicians (ICM)},
-  author = {John Smith and Jiale Liu# and Alan Turing},
-  year = {2024},
-  month = jun,
-  pages = {205--218},
-  publisher = {EMS Press},
-  address = {Paris, France},
-  doi = {10.4171/ICM2024/102},
-  urldate = {2024-12-02},
-  isbn = {978-3-03719-202-8},
-  abstract = {We present a novel constructive proof for the Generalized Riemann Hypothesis (GRH) specifically within the context of function fields over finite constants. Unlike previous existential approaches, our method utilizes the spectral interpretation of the Frobenius automorphism acting on étale cohomology groups. We explicitly construct the L-functions associated with algebraic curves and demonstrate that their zeros lie strictly on the critical line Re(s) = 1/2. This work bridges the gap between classical analytic number theory and geometric invariant theory, offering new insights into the distribution of prime polynomials. The constructive nature of our proof allows for the algorithmic verification of L-function properties for curves of genus g > 100, which was previously computationally intractable.},
-  preview={example.png},
-  description={A constructive proof demonstrating the validity of the Generalized Riemann Hypothesis for function fields using spectral interpretation of the Frobenius automorphism.},
-  keywords={Number Theory, Riemann Hypothesis, Function Fields, Algebraic Geometry}
-}
-
-@inproceedings{brown2023monte,
-  selected={true},
-  title = {Monte Carlo Simulations of Phase Transitions in 2D Ising Models on Non-Euclidean Lattices},
-  shorttitle = {Ising on Hyperbolic Planes},
-  booktitle = {2023 International Conference on Computational Physics (ICCP)},
-  author = {Charlie Brown# and Jiale Liu*},
-  year = {2023},
-  month = dec,
-  pages = {45--52},
-  publisher = {APS},
-  address = {Tokyo, Japan},
-  doi = {10.1103/ICCP.2023.0045},
-  urldate = {2024-12-02},
-  isbn = {978-0-7354-2000-1},
-  abstract = {The behavior of spin systems on curved geometries offers a unique window into the interplay between topology and statistical mechanics. This study employs extensive Monte Carlo simulations to explore the phase transitions of the 2D Ising model mapped onto hyperbolic lattices (Poincaré disk). We utilize the Wolff cluster algorithm to overcome critical slowing down near the phase transition temperature. Our results indicate that the critical exponents on negatively curved surfaces deviate significantly from the standard Onsager solution for flat Euclidean lattices. Specifically, we observe a suppression of the correlation length divergence, suggesting a mean-field-like behavior induced by the exponential expansion of the lattice volume. These findings have implications for understanding quantum gravity models and holographic duality.},
-  preview={example.png},
-  description={Monte Carlo study revealing mean-field-like phase transitions and critical exponent deviations for Ising models on hyperbolic non-Euclidean lattices.},
-  keywords={Statistical Mechanics, Monte Carlo Simulation, Ising Model, Non-Euclidean Geometry}
-}
-
-@article{doe2025existence,
-  title = {On the Existence and Uniqueness of Solutions to Non-Linear Stochastic Partial Differential Equations},
-  author = {Jane Doe and Jiale Liu and Richard Feynman},
-  year = {2025},
-  month = jun,
-  journal = {Annals of Probability},
-  volume = {53},
-  number = {4},
-  pages = {1201--1245},
-  issn = {0091-1798},
-  doi = {10.1214/25-AOP1201},
-  copyright = {https://imstat.org/journals-and-publications/annals-of-probability/},
-  abstract={We establish the existence and uniqueness of strong solutions for a class of non-linear Stochastic Partial Differential Equations (SPDEs) driven by multiplicative Lévy noise. The equations under consideration model turbulent fluid flow and heat transport in random media. By employing a Galerkin approximation scheme combined with a compact embedding theorem, we prove the convergence of the approximate solutions in appropriate Hilbert spaces. Furthermore, we derive a priori estimates that ensure the global regularity of the solution almost surely. A key contribution of this work is the treatment of non-Lipschitz coefficients using a stochastic Gronwall inequality, extending the applicability of the theory to more singular physical models. We also discuss the ergodic properties of the invariant measures associated with the SPDEs.},
-  preview={example.png},
-  description={Mathematical proof of existence and uniqueness for non-linear SPDEs with multiplicative Lévy noise, extending theory to non-Lipschitz coefficients.},
-  keywords={Stochastic Analysis, SPDE, Existence Theorems, Probability Theory}
-}
-
-@article{liu2025algorithmic,
-  title = {Algorithmic Complexity of Tensor Network Contractions in Many-Body Localization},
-  author = {Jiale Liu and Ada Lovelace*},
-  year = {2025},
-  month = sep,
-  journal = {Physical Review E},
-  issn = {2470-0045},
-  publisher = {APS},
-  abstract = {Simulating the dynamics of many-body localized (MBL) systems poses a significant challenge due to the logarithmic growth of entanglement entropy. This paper analyzes the algorithmic complexity of contracting Tensor Networks, specifically Matrix Product States (MPS) and Projected Entangled Pair States (PEPS), when applied to MBL Hamiltonians. We prove that while the exact contraction is #P-complete, approximate contraction schemes based on singular value decomposition (SVD) truncation exhibit polynomial time complexity with bounded error for short-time evolution. However, we identify a "complexity phase transition" at the ergodic-MBL transition point, where the bond dimension required for a fixed accuracy diverges exponentially. We propose a novel adaptive bond-dimension algorithm that optimizes computational resources by exploiting the area law of entanglement in the localized phase, demonstrating superior performance on Heisenberg spin chains.},
-  description={Complexity analysis of tensor network contractions in MBL systems, identifying a complexity phase transition and proposing an adaptive algorithm.},
-  keywords={Tensor Networks, Many-Body Localization, Complexity Theory, Quantum Information},
-  doi = {10.1103/PhysRevE.112.092101},
+@inproceedings{wang-etal-2025-fitcf,
   selected = {true},
-  code = {https://github.com/xyjoey/Tensor_Network_Complexity_MBL},
+    title = "{F}it{CF}: A Framework for Automatic Feature Importance-guided Counterfactual Example Generation",
+    author = {Wang, Qianli  and
+      Feldhus, Nils  and
+      Ostermann, Simon  and
+      Villa-Arenas, Luis Felipe  and
+      Möller, Sebastian  and
+      Schmitt, Vera},
+    editor = "Che, Wanxiang  and
+      Nabende, Joyce  and
+      Shutova, Ekaterina  and
+      Pilehvar, Mohammad Taher",
+    booktitle = "Findings of the Association for Computational Linguistics: ACL",
+    month = jul,
+    year = "2025",
+    address = "Vienna, Austria",
+    publisher = "Association for Computational Linguistics",
+    url = "https://aclanthology.org/2025.findings-acl.64/",
+    doi = "10.18653/v1/2025.findings-acl.64",
+    pages = "1176--1191",
+    ISBN = "979-8-89176-256-5",
+    code = {https://github.com/qiaw99/FitCF},
+    preview={fitcf.png},
+    abstract = {Counterfactual examples are widely used in natural language processing (NLP) as valuable data to improve models, and in explainable artificial intelligence (XAI) to understand model behavior. The automated generation of counterfactual examples remains a challenging task even for large language models (LLMs), despite their impressive performance on many tasks. In this paper, we first introduce ZeroCF, a faithful approach for leveraging important words derived from feature attribution methods to generate counterfactual examples in a zero-shot setting. Second, we present a new framework, FitCF, which further verifies aforementioned counterfactuals by label flip verification and then inserts them as demonstrations for few-shot prompting, outperforming three state-of-the-art baselines. Through ablation studies, we identify the importance of each of FitCF’s core components in improving the quality of counterfactuals, as assessed through flip rate, perplexity, and similarity measures. Furthermore, we show the effectiveness of LIME and Integrated Gradients as backbone attribution methods for FitCF and find that the number of demonstrations has the largest effect on performance. Finally, we reveal a strong correlation between the faithfulness of feature attribution scores and the quality of generated counterfactuals, which we hope will serve as an importantfinding for future research in this direction.},
+}
+
+@inproceedings{wang-etal-2025-multilingual-datasets,
+    title = "Multilingual Datasets for Custom Input Extraction and Explanation Requests Parsing in Conversational {XAI} Systems",
+    author = {Wang, Qianli  and
+      Anikina, Tatiana  and
+      Feldhus, Nils  and
+      Ostermann, Simon  and
+      Splitt, Fedor  and
+      Li, Jiaao  and
+      Tsoneva, Yoana  and
+      Möller, Sebastian  and
+      Schmitt, Vera},
+    editor = "Christodoulopoulos, Christos  and
+      Chakraborty, Tanmoy  and
+      Rose, Carolyn  and
+      Peng, Violet",
+    booktitle = "Findings of the Association for Computational Linguistics: EMNLP",
+    month = nov,
+    year = "2025",
+    address = "Suzhou, China",
+    publisher = "Association for Computational Linguistics",
+    url = "https://aclanthology.org/2025.findings-emnlp.29/",
+    doi = "10.18653/v1/2025.findings-emnlp.29",
+    pages = "534--555",
+    ISBN = "979-8-89176-335-7",
+    preview = {compass.png},
+    code = {https://github.com/qiaw99/compass},
+    abstract = {Conversational explainable artificial intelligence (ConvXAI) systems based on large language models (LLMs) have garnered considerable attention for their ability to enhance user comprehension through dialogue-based explanations. Current ConvXAI systems often are based on intent recognition to accurately identify the user’s desired intention and map it to an explainability method. While such methods offer great precision and reliability in discerning users’ underlying intentions for English, a significant challenge in the scarcity of training data persists, which impedes multilingual generalization. Besides, the support for free-form custom inputs, which are user-defined data distinct from pre-configured dataset instances, remains largely limited. To bridge these gaps, we first introduce MultiCoXQL, a multilingual extension of the CoXQL dataset spanning five typologically diverse languages, including one low-resource language. Subsequently, we propose a new parsing approach aimed at enhancing multilingual parsing performance, and evaluate three LLMs on MultiCoXQL using various parsing strategies. Furthermore, we present Compass, a new multilingual dataset designed for custom input extraction in ConvXAI systems, encompassing 11 intents across the same five languages as MultiCoXQL. We conduct monolingual, cross-lingual, and multilingual evaluations on Compass, employing three LLMs of varying sizes alongside BERT-type models.},
+}
+
+@inproceedings{wang-etal-2025-truth,
+    title = "Truth or Twist? Optimal Model Selection for Reliable Label Flipping Evaluation in {LLM}-based Counterfactuals",
+    author = {Wang, Qianli  and
+      Nguyen, Van Bach  and
+      Feldhus, Nils  and
+      Villa-Arenas, Luis Felipe  and
+      Seifert, Christin  and
+      Möller, Sebastian  and
+      Schmitt, Vera},
+    editor = "Flek, Lucie  and
+      Narayan, Shashi  and
+      Phương, L{\^e} Hồng  and
+      Pei, Jiahuan",
+    booktitle = "Proceedings of the 18th International Natural Language Generation Conference",
+    month = oct,
+    year = "2025",
+    address = "Hanoi, Vietnam",
+    publisher = "Association for Computational Linguistics",
+    url = "https://aclanthology.org/2025.inlg-main.5/",
+    pages = "80--97",
+    code = {https://github.com/qiaw99/truth-or-twist},
+    description = {Oral Presentation},
+    preview = {truth.png},
+    abstract = {Counterfactual examples are widely employed to enhance the performance and robustness of large language models (LLMs) through counterfactual data augmentation (CDA). However, the selection of the judge model used to evaluate label flipping, the primary metric for assessing the validity of generated counterfactuals for CDA, yields inconsistent results. To decipher this, we define four types of relationships between the counterfactual generator and judge models: being the same model, belonging to the same model family, being independent models, and having an distillation relationship. Through extensive experiments involving two state-of-the-art LLM-based methods, three datasets, four generator models, and 15 judge models, complemented by a user study (n = 90), we demonstrate that judge models with an independent, non-fine-tuned relationship to the generator model provide the most reliable label flipping evaluations. Relationships between the generator and judge models, which are closely aligned with the user study for CDA, result in better model performance and robustness. Nevertheless, we find that the gap between the most effective judge models and the results obtained from the user study remains considerably large. This suggests that a fully automated pipeline for CDA may be inadequate and requires human intervention.},
+}
+
+@inproceedings{wang-etal-2024-coxql,
+    title = "{C}o{XQL}: A Dataset for Parsing Explanation Requests in Conversational {XAI} Systems",
+    author = {Wang, Qianli  and
+      Anikina, Tatiana  and
+      Feldhus, Nils  and
+      Ostermann, Simon  and
+      Möller, Sebastian},
+    editor = "Al-Onaizan, Yaser  and
+      Bansal, Mohit  and
+      Chen, Yun-Nung",
+    booktitle = "Findings of the Association for Computational Linguistics: EMNLP",
+    month = nov,
+    year = "2024",
+    address = "Miami, Florida, USA",
+    publisher = "Association for Computational Linguistics",
+    url = "https://aclanthology.org/2024.findings-emnlp.76/",
+    doi = "10.18653/v1/2024.findings-emnlp.76",
+    pages = "1410--1422",
+    code = {https://github.com/DFKI-NLP/CoXQL},
+    abstract = {Conversational explainable artificial intelligence (ConvXAI) systems based on large language models (LLMs) have garnered significant interest from the research community in natural language processing (NLP) and human-computer interaction (HCI). Such systems can provide answers to user questions about explanations in dialogues, have the potential to enhance users’ comprehension and offer more information about the decision-making and generation processes of LLMs. Currently available ConvXAI systems are based on intent recognition rather than free chat, as this has been found to be more precise and reliable in identifying users’ intentions. However, the recognition of intents still presents a challenge in the case of ConvXAI, since little training data exist and the domain is highly specific, as there is a broad range of XAI methods to map requests onto. In order to bridge this gap, we present CoXQL, the first dataset in the NLP domain for user intent recognition in ConvXAI, covering 31 intents, seven of which require filling multiple slots. Subsequently, we enhance an existing parsing approach by incorporating template validations, and conduct an evaluation of several LLMs on CoXQL using different parsing strategies. We conclude that the improved parsing approach (MP+) surpasses the performance of previous approaches. We also discover that intents with multiple slots remain highly challenging for LLMs.},
+}
+
+@inproceedings{wang-etal-2024-llmcheckup,
+    title = "{LLMC}heckup: Conversational Examination of Large Language Models via Interpretability Tools and Self-Explanations",
+    author = {Wang, Qianli  and
+      Anikina, Tatiana  and
+      Feldhus, Nils  and
+      Genabith, Josef  and
+      Hennig, Leonhard  and
+      Möller, Sebastian},
+    editor = "Blodgett, Su Lin  and
+      Cercas Curry, Amanda  and
+      Dev, Sunipa  and
+      Madaio, Michael  and
+      Nenkova, Ani  and
+      Yang, Diyi  and
+      Xiao, Ziang",
+    booktitle = "Proceedings of the Third Workshop on Bridging Human--Computer Interaction and Natural Language Processing",
+    month = jun,
+    year = "2024",
+    address = "Mexico City, Mexico",
+    publisher = "Association for Computational Linguistics",
+    url = "https://aclanthology.org/2024.hcinlp-1.9/",
+    doi = "10.18653/v1/2024.hcinlp-1.9",
+    pages = "89--104",
+    code = {https://github.com/DFKI-NLP/LLMCheckup},
+    preview = {LLMCheckup_Logo.png},
+    abstract = {Interpretability tools that offer explanations in the form of a dialogue have demonstrated their efficacy in enhancing users’ understanding (Slack et al., 2023; Shen et al., 2023), as one-off explanations may fall short in providing sufficient information to the user. Current solutions for dialogue-based explanations, however, often require external tools and modules and are not easily transferable to tasks they were not designed for. With LLMCheckup, we present an easily accessible tool that allows users to chat with any state-of-the-art large language model (LLM) about its behavior. We enable LLMs to generate explanations and perform user intent recognition without fine-tuning, by connecting them with a broad spectrum of Explainable AI (XAI) methods, including white-box explainability tools such as feature attributions, and self-explanations (e.g., for rationale generation). LLM-based (self-)explanations are presented as an interactive dialogue that supports follow-up questions and generates suggestions. LLMCheckup provides tutorials for operations available in the system, catering to individuals with varying levels of expertise in XAI and supporting multiple input modalities. We introduce a new parsing strategy that substantially enhances the user intent recognition accuracy of the LLM. Finally, we showcase LLMCheckup for the tasks of fact checking and commonsense question answering.},
+}
+
+@inproceedings{feldhus-etal-2023-interrolang,
+    title = "{I}nterro{L}ang: Exploring {NLP} Models and Datasets through Dialogue-based Explanations",
+    author = {Feldhus, Nils  and
+      Wang, Qianli  and
+      Anikina, Tatiana  and
+      Chopra, Sahil  and
+      Oguz, Cennet  and
+      Möller, Sebastian},
+    editor = "Bouamor, Houda  and
+      Pino, Juan  and
+      Bali, Kalika",
+    booktitle = "Findings of the Association for Computational Linguistics: EMNLP",
+    month = dec,
+    year = "2023",
+    address = "Singapore",
+    publisher = "Association for Computational Linguistics",
+    url = "https://aclanthology.org/2023.findings-emnlp.359/",
+    doi = "10.18653/v1/2023.findings-emnlp.359",
+    pages = "5399--5421",
+    code = {https://github.com/DFKI-NLP/InterroLang},
+    preview = {InterroLang_Logo.png},
+    abstract = {While recently developed NLP explainability methods let us open the black box in various ways (Madsen et al., 2022), a missing ingredient in this endeavor is an interactive tool offering a conversational interface. Such a dialogue system can help users explore datasets and models with explanations in a contextualized manner, e.g. via clarification or follow-up questions, and through a natural language interface. We adapt the conversational explanation framework TalkToModel (Slack et al., 2022) to the NLP domain, add new NLP-specific operations such as free-text rationalization, and illustrate its generalizability on three NLP tasks (dialogue act classification, question answering, hate speech detection). To recognize user queries for explanations, we evaluate fine-tuned and few-shot prompting models and implement a novel adapter-based approach. We then conduct two user studies on (1) the perceived correctness and helpfulness of the dialogues, and (2) the simulatability, i.e. how objectively helpful dialogical explanations are for humans in figuring out the model’s predicted label when it’s not shown. We found rationalization and feature attribution were helpful in explaining the model behavior. Moreover, users could more reliably predict the model outcome based on an explanation dialogue rather than one-off explanations.},
+}
+
+@misc{wang2025compressedlensinvestigatingimpact,
+      title={Through a Compressed Lens: Investigating the Impact of Quantization on LLM Explainability and Interpretability},
+      author={Qianli Wang and Mingyang Wang and Nils Feldhus and Simon Ostermann and Yuan Cao and Hinrich Schütze and Sebastian Möller and Vera Schmitt},
+      year={2025},
+      eprint={2505.13963},
+      archivePrefix={arXiv},
+      primaryClass={cs.CL},
+      url={https://arxiv.org/abs/2505.13963},
+}
+
+@misc{villaarenas2024anchoredalignmentselfexplanationsenhancement,
+      title={Anchored Alignment for Self-Explanations Enhancement},
+      author={Luis Felipe Villa-Arenas and Ata Nizamoglu and Qianli Wang and Sebastian Möller and Vera Schmitt},
+      year={2024},
+      eprint={2410.13216},
+      archivePrefix={arXiv},
+      primaryClass={cs.AI},
+      url={https://arxiv.org/abs/2410.13216},
+}
+
+@inproceedings{10.1145/3677525.3678665,
+    author = {Feldhus, Nils and Anagnostopoulou, Aliki and Wang, Qianli and Alshomary, Milad and Wachsmuth, Henning and Sonntag, Daniel and Möller, Sebastian},
+    title = {Towards Modeling and Evaluating Instructional Explanations in Teacher-Student Dialogues},
+    year = {2024},
+    isbn = {9798400710940},
+    publisher = {Association for Computing Machinery},
+    address = {New York, NY, USA},
+    url = {https://doi.org/10.1145/3677525.3678665},
+    doi = {10.1145/3677525.3678665},
+    abstract = {For dialogues in which teachers explain difficult concepts to students, didactics research often debates which teaching strategies lead to the best learning outcome. In this paper, we test if LLMs can reliably annotate such explanation dialogues, s.t. they could assist in lesson planning and tutoring systems. We first create a new annotation scheme of teaching acts aligned with contemporary teaching models and re-annotate a dataset of conversational explanations about communicating scientific understanding in teacher-student settings on five levels of the explainee’s expertise: ReWIRED contains three layers of acts (Teaching, Explanation, Dialogue) with increased granularity (span-level). We then evaluate language models on the labeling of such acts and find that the broad range and structure of the proposed labels is hard to model for LLMs such as GPT-3.5/-4 via prompting, but a fine-tuned BERT can perform both act classification and span labeling well. Finally, we operationalize a series of quality metrics for instructional explanations in the form of a test suite, finding that they match the five expertise levels well.1},
+    booktitle = {Proceedings of the 2024 International Conference on Information Technology for Social Good},
+    pages = {225–230},
+    numpages = {6},
+    keywords = {Dialogue, Discourse Analysis, Evaluation, Explanations},
+    location = {Bremen, Germany},
+    series = {GoodIT '24}
+}
+
+@inproceedings{10.1145/3733567.3735566,
+    author = {Schmitt, Vera and Bezzaoui, Isabel and Jakob, Charlott and Sahitaj, Premtim and Wang, Qianli and Hilbert, Arthur and Upravitelev, Max and Fegert, Jonas and Möller, Sebastian and Solopova, Veronika},
+    title = {Beyond Transparency: Evaluating Explainability in AI-Supported Fact-Checking},
+    year = {2025},
+    isbn = {9798400718915},
+    publisher = {Association for Computing Machinery},
+    address = {New York, NY, USA},
+    url = {https://doi.org/10.1145/3733567.3735566},
+    doi = {10.1145/3733567.3735566},
+    abstract = {The rise of Generative AI has made the creation and spread of disinformation easier than ever. In response, the EU’s Digital Services Act now requires social media platforms to implement effective countermeasures. However, the sheer volume of online content renders manual verification increasingly impractical. Recent research shows that combining AI with human expertise can improve fact-checking performance, but human oversight remains crucial, especially in domains involving fundamental rights like free speech. When ground truth is uncertain, AI systems must be both transparent and explainable. While various explainability methods have been applied to disinformation detection, they often lack human-centered evaluation regarding their task-specific usefulness and interpretability. In this study, we evaluate different explainability features in AI systems for fact-checking, focusing on their impact on performance, perceived usefulness, and understandability. Based on a user study (n=406) including crowdworkers and journalists, we find that explanations enhance perceived usefulness and clarity but do not consistently improve human-AI performance, and can even lead to overconfidence. Moreover, whereas XAI features generally help to increase performance, they enabled more individual interpretation among experts and lay-users, resulting in a broader variation of outcomes under. This underscores the need for complementary interventions and training to mitigate overreliance and support effective human-AI collaboration in fact-checking.},
+    booktitle = {Proceedings of the 4th ACM International Workshop on Multimedia AI against Disinformation},
+    pages = {63–72},
+    numpages = {10},
+    keywords = {Explainable AI, Meaningful Transparency, Fact-Checking, Disinformation Detection, Human-Centered AI, NLP/LLMs, Empirical Evaluation, AI Act, DSA},
+    location = {
+    },
+    series = {MAD' 25}
 }

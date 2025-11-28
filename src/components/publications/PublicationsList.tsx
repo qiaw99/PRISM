@@ -9,7 +9,13 @@ import {
     CalendarIcon,
     BookOpenIcon,
     ClipboardDocumentIcon,
-    DocumentTextIcon
+    DocumentTextIcon,
+    ArrowTopRightOnSquareIcon,
+    NewspaperIcon, // Journal icon
+    AcademicCapIcon, // Thesis icon
+    BookOpenIcon as BookIcon, // Book/Chapter icon (renamed for clarity)
+    CpuChipIcon, // Technical Report/Preprint icon
+    CodeBracketIcon // Code icon
 } from '@heroicons/react/24/outline';
 import { Publication } from '@/types/publication';
 import { PublicationPageConfig } from '@/types/page';
@@ -20,6 +26,50 @@ interface PublicationsListProps {
     publications: Publication[];
     embedded?: boolean;
 }
+
+// --- NEW COMPONENT: PublicationIcon ---
+const PublicationIcon = ({ type, className }: { type: Publication['type']; className?: string }) => {
+    let IconComponent;
+    let title;
+
+    switch (type) {
+        case 'journal':
+            IconComponent = NewspaperIcon;
+            title = 'Journal Article';
+            break;
+        case 'conference':
+            // This is the "Proceeding" icon the user mentioned for 'inproceedings'
+            IconComponent = ClipboardDocumentIcon;
+            title = 'Conference Paper / Proceeding';
+            break;
+        case 'book-chapter':
+            IconComponent = BookIcon;
+            title = 'Book Chapter';
+            break;
+        case 'book':
+            IconComponent = BookIcon;
+            title = 'Book';
+            break;
+        case 'thesis':
+            IconComponent = AcademicCapIcon;
+            title = 'Thesis';
+            break;
+        case 'technical-report':
+        case 'preprint':
+        default:
+            IconComponent = CpuChipIcon;
+            title = 'Preprint / Technical Report / Misc';
+            break;
+    }
+
+    return (
+        <div className={cn("flex-shrink-0 flex items-center justify-center p-2 rounded-full bg-accent text-white h-8 w-8", className)} title={title}>
+            <IconComponent className="h-5 w-5" />
+        </div>
+    );
+};
+
+// ------------------------------------
 
 export default function PublicationsList({ config, publications, embedded = false }: PublicationsListProps) {
     const [searchQuery, setSearchQuery] = useState('');
@@ -73,7 +123,6 @@ export default function PublicationsList({ config, publications, embedded = fals
 
             {/* Search and Filter Controls */}
             <div className="mb-8 space-y-4">
-                {/* ... (keep existing controls) ... */}
                 <div className="flex flex-col sm:flex-row gap-4">
                     <div className="relative flex-grow">
                         <MagnifyingGlassIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-neutral-400" />
@@ -211,10 +260,19 @@ export default function PublicationsList({ config, publications, embedded = fals
                                     </div>
                                 )}
                                 <div className="flex-grow">
-                                    <h3 className={`${embedded ? "text-lg" : "text-xl"} font-semibold text-primary mb-2 leading-tight`}>
-                                        {pub.title}
-                                    </h3>
-                                    <p className={`${embedded ? "text-sm" : "text-base"} text-neutral-600 dark:text-neutral-400 mb-2`}>
+                                    {/* Primary Publication Info */}
+                                    <div className='flex items-start mb-2'>
+                                        {/* Publication Type Icon */}
+                                        <PublicationIcon type={pub.type} className='mr-3 mt-1' />
+
+                                        <div>
+                                            <h3 className={`${embedded ? "text-lg" : "text-xl"} font-semibold text-primary leading-tight`}>
+                                                {pub.title}
+                                            </h3>
+                                        </div>
+                                    </div>
+
+                                    <p className={`${embedded ? "text-sm" : "text-base"} text-neutral-600 dark:text-neutral-400 mb-2 pl-11`}>
                                         {pub.authors.map((author, idx) => (
                                             <span key={idx}>
                                                 <span className={author.isHighlighted ? 'font-semibold text-accent' : ''}>
@@ -227,7 +285,7 @@ export default function PublicationsList({ config, publications, embedded = fals
                                             </span>
                                         ))}
                                     </p>
-                                    <p className="text-sm font-medium text-neutral-800 dark:text-neutral-600 mb-3">
+                                    <p className="text-sm font-medium text-neutral-800 dark:text-neutral-600 mb-3 pl-11">
                                         {pub.journal || pub.conference} {pub.year}
                                     </p>
 
@@ -237,17 +295,23 @@ export default function PublicationsList({ config, publications, embedded = fals
                                         </p>
                                     )}
 
+                                    {/* Link Buttons */}
                                     <div className="flex flex-wrap gap-2 mt-auto">
-                                        {pub.doi && (
+
+                                        {/* URL Link Button (for Paper/External Link) */}
+                                        {pub.url && (
                                             <a
-                                                href={`https://doi.org/${pub.doi}`}
+                                                href={pub.url}
                                                 target="_blank"
                                                 rel="noopener noreferrer"
                                                 className="inline-flex items-center px-3 py-1 rounded-md text-xs font-medium bg-neutral-100 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300 hover:bg-accent hover:text-white transition-colors"
                                             >
-                                                DOI
+                                                <ArrowTopRightOnSquareIcon className="h-3 w-3 mr-1.5" />
+                                                Paper
                                             </a>
                                         )}
+
+                                        {/* Code Link Button */}
                                         {pub.code && (
                                             <a
                                                 href={pub.code}
@@ -255,9 +319,12 @@ export default function PublicationsList({ config, publications, embedded = fals
                                                 rel="noopener noreferrer"
                                                 className="inline-flex items-center px-3 py-1 rounded-md text-xs font-medium bg-neutral-100 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300 hover:bg-accent hover:text-white transition-colors"
                                             >
+                                                <CodeBracketIcon className="h-3 w-3 mr-1.5" />
                                                 Code
                                             </a>
                                         )}
+
+                                        {/* Abstract Button */}
                                         {pub.abstract && (
                                             <button
                                                 onClick={() => setExpandedAbstractId(expandedAbstractId === pub.id ? null : pub.id)}
@@ -272,6 +339,8 @@ export default function PublicationsList({ config, publications, embedded = fals
                                                 Abstract
                                             </button>
                                         )}
+
+                                        {/* BibTeX Button */}
                                         {pub.bibtex && (
                                             <button
                                                 onClick={() => setExpandedBibtexId(expandedBibtexId === pub.id ? null : pub.id)}
@@ -288,6 +357,7 @@ export default function PublicationsList({ config, publications, embedded = fals
                                         )}
                                     </div>
 
+                                    {/* Abstract/BibTeX Expansion */}
                                     <AnimatePresence>
                                         {expandedAbstractId === pub.id && pub.abstract ? (
                                             <motion.div

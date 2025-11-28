@@ -1,0 +1,14 @@
+type = "card"
+title = "Talk"
+
+[[items]]
+title = "Truth or Twist? Optimal Model Selection for Reliable Label Flipping Evaluation in LLM-based Counterfactuals"
+subtitle = "Oral Presentation"
+date = "2025-11-01"
+tags=["INLG 2025"]
+
+[[items]]
+title = "FitCF: A Framework for Automatic Feature Importance-guided Counterfactual Example Generation"
+subtitle = "Invited Talk"
+date = "2025-04-29"
+tags=["MLT lab - DFKI"]

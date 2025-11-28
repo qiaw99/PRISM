@@ -3,8 +3,29 @@ title = "Teaching"
 description = "Courses I have taught or assisted with."
 
 [[items]]
-title = "Example Course"
-subtitle = "Teaching Assistant"
-date = "2024"
-content = "Description of the course and responsibilities."
-tags = ["Undergraduate", "CS"]
+title = "Advanced Study Projects Quality & Usability"
+subtitle = "Explaining and Evaluating Bilingual Natural Language Inference Questions"
+date = "Winter Semester 2025/26"
+content = "Extend an existing dataset to German and enrich it with additional explanation scoring."
+tags = ["Graduate", "NLP"]
+
+[[items]]
+title = "Usability Engineering"
+subtitle = "Explanation Quality Assessment"
+date = "Summer Semester 2025"
+content = "Conducting human evaluation for counterfactual examples."
+tags = ["Undergraduate", "Quality Engineering"]
+
+[[items]]
+title = "Advanced Study Projects Quality & Usability"
+subtitle = "When Anonymization Meets Explainability"
+date = "Summer Semester 2025"
+content = "Implementing and evaluating various XAI approaches on the anonymization task. Co-lead with Ibrahim Baroud."
+tags = ["Graduate", "NLP"]
+
+[[items]]
+title = "Advanced Study Projects Quality & Usability"
+subtitle = "Explainability for Large Language Models"
+date = "Winter Semester 2024/25"
+content = "Explaining Model Behavior on Long-form Methodical Tasks. Co-lead with Nils Feldhus."
+tags = ["Graduate", "NLP"]

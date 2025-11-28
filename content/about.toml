@@ -3,9 +3,11 @@ title = "About"
 
 [profile]
 research_interests = [
-  "Computational Physics",
-  "Mathematical Principles",
-  "Proof of Theorems"
+  "post-hoc explanations (counterfactual example, free-text rationale)", "interactive conversational XAI systems",
+  "mechanistic interpretability",
+  "explanation faithfulness",
+  "multilinguality",
+  "evaluation"
 ]
 
 [[sections]]
@@ -15,6 +17,12 @@ source = "bio.md"
 title = "About"
 
 [[sections]]
+id = "news"
+type = "markdown"
+title = "News"
+source = "news.md"
+
+[[sections]]
 id = "featured_publications"
 type = "publications"
 title = "Selected Publications"
@@ -22,8 +30,7 @@ filter = "selected"
 limit = 5
 
 [[sections]]
-id = "news"
-type = "list"
-title = "News"
-source = "news.toml"
-
+id = "cv"
+type = "markdown"
+title = ""
+source = "cv.md"

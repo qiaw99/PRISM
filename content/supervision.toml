@@ -1,0 +1,47 @@
+type = "card"
+title = "Supervision"
+
+[[items]]
+title = "Counterfactual Example Generation Enhancement via Alignment-as-Preference Optimization"
+subtitle = "Fedor Splitt"
+date = "Ongoing"
+tags=["B.Sc."]
+
+[[items]]
+title = "EffiCoC: Efficient Chain-of-Code with CodeLLMs"
+subtitle = "Jiaao Li"
+date = "Ongoing"
+tags=["M.Sc."]
+
+[[items]]
+title = "Are multilingual Self-Explanations faithful?"
+subtitle = "Nico Tananow"
+date = "Ongoing"
+tags=["M.Sc."]
+
+[[items]]
+title = "XAI in Data Privacy and Data Anonymization: A Survey"
+subtitle = "Alexandra Iakovleva"
+date = "WS2025/26"
+tags=["B.Sc."]
+
+[[items]]
+title = "AIGC: Automatic Iterative Generation for Counterfactuals"
+subtitle = "Yilong Wang"
+date = "WS2025/26"
+content = "A paper titled \"iFlip: A Feedback-Driven Framework for Iterative Counterfactual Example Refinement\", which builds upon the thesis, is submitted to ACL 2026."
+tags=["B.Sc."]
+
+[[items]]
+title = "Student Research Assistant Supervision"
+subtitle = "Fedor Splitt"
+date = "2025/02/15-ongoing"
+content = "Intent recognition in conversational XAI systems and counterfactual data augmentation"
+tags=["B.Sc."]
+
+[[items]]
+title = "Student Research Assistant Supervision"
+subtitle = "Yoana Tsoneva"
+date = "2025/01/16-2025/03/15"
+content = "Intent recognition in conversational XAI systems"
+tags=["M.Sc."]
