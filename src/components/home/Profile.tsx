@@ -34,6 +34,8 @@ interface ProfileProps {
 }
 
 export default function Profile({ author, social, features, researchInterests }: ProfileProps) {
+    // 添加 mounted 状态来处理 hydration
+    const [mounted, setMounted] = useState(false);
 
     const [hasLiked, setHasLiked] = useState(false);
     const [showThanks, setShowThanks] = useState(false);
@@ -43,15 +45,20 @@ export default function Profile({ author, social, features, researchInterests }:
     const [isEmailPinned, setIsEmailPinned] = useState(false);
     const [lastClickedTooltip, setLastClickedTooltip] = useState<'email' | 'address' | null>(null);
 
+    // 确保组件已挂载
+    useEffect(() => {
+        setMounted(true);
+    }, []);
+
     // Check local storage for user's like status
     useEffect(() => {
-        if (!features.enable_likes) return;
+        if (!mounted || !features.enable_likes) return;
 
         const userHasLiked = localStorage.getItem('jiale-website-user-liked');
         if (userHasLiked === 'true') {
             setHasLiked(true);
         }
-    }, [features.enable_likes]);
+    }, [mounted, features.enable_likes]);
 
     const handleLike = () => {
         const newLikedState = !hasLiked;
@@ -166,52 +173,54 @@ export default function Profile({ author, social, features, researchInterests }:
                                 </button>
 
                                 {/* Address tooltip */}
-                                <AnimatePresence>
-                                    {(showAddress || isAddressPinned) && (
-                                        <motion.div
-                                            initial={{ opacity: 0, y: 10, scale: 0.8 }}
-                                            animate={{ opacity: 1, y: -10, scale: 1 }}
-                                            exit={{ opacity: 0, y: -20, scale: 0.8 }}
-                                            className={`absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-full bg-neutral-800 text-white px-4 py-3 rounded-lg text-sm font-medium shadow-lg max-w-[calc(100vw-2rem)] sm:max-w-none sm:whitespace-nowrap ${lastClickedTooltip === 'address' ? 'z-20' : 'z-10'
-                                                }`}
-                                            onMouseEnter={() => {
-                                                if (!isAddressPinned) setShowAddress(true);
-                                                setLastClickedTooltip('address');
-                                            }}
-                                            onMouseLeave={() => !isAddressPinned && setShowAddress(false)}
-                                        >
-                                            <div className="text-center">
-                                                <div className="flex items-center justify-center space-x-2 mb-1">
-                                                    <p className="font-semibold">Work Address</p>
-                                                    {!isAddressPinned && (
-                                                        <div className="flex items-center space-x-0.5 text-xs text-neutral-400 opacity-60">
-                                                            <Pin className="h-2.5 w-2.5" />
-                                                            <span className="hidden sm:inline">Click</span>
-                                                        </div>
-                                                    )}
-                                                </div>
-                                                {social.location_details?.map((line, i) => (
-                                                    <p key={i} className="break-words">{line}</p>
-                                                ))}
-                                                <div className="mt-2 flex flex-col space-y-2 sm:flex-row sm:space-y-0 sm:space-x-2 justify-center">
-                                                    {social.location_url && (
-                                                        <a
-                                                            href={social.location_url}
-                                                            target="_blank"
-                                                            rel="noopener noreferrer"
-                                                            className="inline-flex items-center justify-center space-x-2 bg-accent hover:bg-accent-dark text-white px-3 py-1 rounded-md text-xs font-medium transition-colors duration-200 w-full sm:w-auto"
-                                                        >
-                                                            <MapPinIcon className="h-4 w-4" />
-                                                            <span>Google Map</span>
-                                                        </a>
-                                                    )}
-                                                </div>
+                                {mounted && (
+                                    <AnimatePresence>
+                                        {(showAddress || isAddressPinned) && (
+                                            <motion.div
+                                                initial={{ opacity: 0, y: 10, scale: 0.8 }}
+                                                animate={{ opacity: 1, y: -10, scale: 1 }}
+                                                exit={{ opacity: 0, y: -20, scale: 0.8 }}
+                                                className={`absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-full bg-neutral-800 text-white px-4 py-3 rounded-lg text-sm font-medium shadow-lg max-w-[calc(100vw-2rem)] sm:max-w-none sm:whitespace-nowrap ${lastClickedTooltip === 'address' ? 'z-20' : 'z-10'
+                                                    }`}
+                                                onMouseEnter={() => {
+                                                    if (!isAddressPinned) setShowAddress(true);
+                                                    setLastClickedTooltip('address');
+                                                }}
+                                                onMouseLeave={() => !isAddressPinned && setShowAddress(false)}
+                                            >
+                                                <div className="text-center">
+                                                    <div className="flex items-center justify-center space-x-2 mb-1">
+                                                        <p className="font-semibold">Work Address</p>
+                                                        {!isAddressPinned && (
+                                                            <div className="flex items-center space-x-0.5 text-xs text-neutral-400 opacity-60">
+                                                                <Pin className="h-2.5 w-2.5" />
+                                                                <span className="hidden sm:inline">Click</span>
+                                                            </div>
+                                                        )}
+                                                    </div>
+                                                    {social.location_details?.map((line, i) => (
+                                                        <p key={i} className="break-words">{line}</p>
+                                                    ))}
+                                                    <div className="mt-2 flex flex-col space-y-2 sm:flex-row sm:space-y-0 sm:space-x-2 justify-center">
+                                                        {social.location_url && (
+                                                            <a
+                                                                href={social.location_url}
+                                                                target="_blank"
+                                                                rel="noopener noreferrer"
+                                                                className="inline-flex items-center justify-center space-x-2 bg-accent hover:bg-accent-dark text-white px-3 py-1 rounded-md text-xs font-medium transition-colors duration-200 w-full sm:w-auto"
+                                                            >
+                                                                <MapPinIcon className="h-4 w-4" />
+                                                                <span>Google Map</span>
+                                                            </a>
+                                                        )}
+                                                    </div>
 
-                                            </div>
-                                            <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-neutral-800"></div>
-                                        </motion.div>
-                                    )}
-                                </AnimatePresence>
+                                                </div>
+                                                <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-neutral-800"></div>
+                                            </motion.div>
+                                        )}
+                                    </AnimatePresence>
+                                )}
                             </div>
                         );
                     }
@@ -243,46 +252,48 @@ export default function Profile({ author, social, features, researchInterests }:
                                 </button>
 
                                 {/* Email tooltip */}
-                                <AnimatePresence>
-                                    {(showEmail || isEmailPinned) && (
-                                        <motion.div
-                                            initial={{ opacity: 0, y: 10, scale: 0.8 }}
-                                            animate={{ opacity: 1, y: -10, scale: 1 }}
-                                            exit={{ opacity: 0, y: -20, scale: 0.8 }}
-                                            className={`absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-full bg-neutral-800 text-white px-4 py-3 rounded-lg text-sm font-medium shadow-lg max-w-[calc(100vw-2rem)] sm:max-w-none sm:whitespace-nowrap ${lastClickedTooltip === 'email' ? 'z-20' : 'z-10'
-                                                }`}
-                                            onMouseEnter={() => {
-                                                if (!isEmailPinned) setShowEmail(true);
-                                                setLastClickedTooltip('email');
-                                            }}
-                                            onMouseLeave={() => !isEmailPinned && setShowEmail(false)}
-                                        >
-                                            <div className="text-center">
-                                                <div className="flex items-center justify-center space-x-2 mb-1">
-                                                    <p className="font-semibold">Email</p>
-                                                    {!isEmailPinned && (
-                                                        <div className="flex items-center space-x-0.5 text-xs text-neutral-400 opacity-60">
-                                                            <Pin className="h-2.5 w-2.5" />
-                                                            <span className="hidden sm:inline">Click</span>
-                                                        </div>
-                                                    )}
+                                {mounted && (
+                                    <AnimatePresence>
+                                        {(showEmail || isEmailPinned) && (
+                                            <motion.div
+                                                initial={{ opacity: 0, y: 10, scale: 0.8 }}
+                                                animate={{ opacity: 1, y: -10, scale: 1 }}
+                                                exit={{ opacity: 0, y: -20, scale: 0.8 }}
+                                                className={`absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-full bg-neutral-800 text-white px-4 py-3 rounded-lg text-sm font-medium shadow-lg max-w-[calc(100vw-2rem)] sm:max-w-none sm:whitespace-nowrap ${lastClickedTooltip === 'email' ? 'z-20' : 'z-10'
+                                                    }`}
+                                                onMouseEnter={() => {
+                                                    if (!isEmailPinned) setShowEmail(true);
+                                                    setLastClickedTooltip('email');
+                                                }}
+                                                onMouseLeave={() => !isEmailPinned && setShowEmail(false)}
+                                            >
+                                                <div className="text-center">
+                                                    <div className="flex items-center justify-center space-x-2 mb-1">
+                                                        <p className="font-semibold">Email</p>
+                                                        {!isEmailPinned && (
+                                                            <div className="flex items-center space-x-0.5 text-xs text-neutral-400 opacity-60">
+                                                                <Pin className="h-2.5 w-2.5" />
+                                                                <span className="hidden sm:inline">Click</span>
+                                                            </div>
+                                                        )}
+                                                    </div>
+                                                    <p className="break-words">{social.email?.replace('@', ' (at) ')}</p>
+                                                    <div className="mt-2">
+                                                        <a
+                                                            href={link.href}
+                                                            className="inline-flex items-center justify-center space-x-2 bg-accent hover:bg-accent-dark text-white px-3 py-1 rounded-md text-xs font-medium transition-colors duration-200 w-full sm:w-auto"
+                                                        >
+                                                            <EnvelopeIcon className="h-4 w-4" />
+                                                            <span className="sm:hidden">Send</span>
+                                                            <span className="hidden sm:inline">Send Email</span>
+                                                        </a>
+                                                    </div>
                                                 </div>
-                                                <p className="break-words">{social.email?.replace('@', ' (at) ')}</p>
-                                                <div className="mt-2">
-                                                    <a
-                                                        href={link.href}
-                                                        className="inline-flex items-center justify-center space-x-2 bg-accent hover:bg-accent-dark text-white px-3 py-1 rounded-md text-xs font-medium transition-colors duration-200 w-full sm:w-auto"
-                                                    >
-                                                        <EnvelopeIcon className="h-4 w-4" />
-                                                        <span className="sm:hidden">Send</span>
-                                                        <span className="hidden sm:inline">Send Email</span>
-                                                    </a>
-                                                </div>
-                                            </div>
-                                            <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-neutral-800"></div>
-                                        </motion.div>
-                                    )}
-                                </AnimatePresence>
+                                                <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-neutral-800"></div>
+                                            </motion.div>
+                                        )}
+                                    </AnimatePresence>
+                                )}
                             </div>
                         );
                     }
@@ -313,8 +324,23 @@ export default function Profile({ author, social, features, researchInterests }:
                 </div>
             )}
 
-            {/* Like Button */}
-            {features.enable_likes && (
+            {/* Visitor Map */}
+            <div className="bg-neutral-100 dark:bg-neutral-800 rounded-lg p-4 mb-6 hover:shadow-lg transition-all duration-200 hover:scale-[1.02]">
+                <h3 className="font-semibold text-primary mb-3">🌍 Visitor Map</h3>
+                <div className="flex justify-center items-center">
+                    <a href="https://clustrmaps.com/site/1c8o4" title="ClustrMaps">
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img
+                            src="//www.clustrmaps.com/map_v2.png?d=tGUG9NkI1frMABLHvpyLVDTJpoves1PSvOUI8vbqBe8&cl=ffffff"
+                            alt="Visitor Map"
+                            className="rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200"
+                        />
+                    </a>
+                </div>
+            </div>
+
+            {/* Like Button - 添加 mounted 检查 */}
+            {mounted && features.enable_likes && (
                 <div className="flex justify-center">
                     <div className="relative">
                         <motion.button

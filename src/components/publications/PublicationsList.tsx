@@ -11,11 +11,12 @@ import {
     ClipboardDocumentIcon,
     DocumentTextIcon,
     ArrowTopRightOnSquareIcon,
-    NewspaperIcon, // Journal icon
-    AcademicCapIcon, // Thesis icon
-    BookOpenIcon as BookIcon, // Book/Chapter icon (renamed for clarity)
-    CpuChipIcon, // Technical Report/Preprint icon
-    CodeBracketIcon // Code icon
+    NewspaperIcon,
+    AcademicCapIcon,
+    BookOpenIcon as BookIcon,
+    CpuChipIcon,
+    CodeBracketIcon,
+    UserIcon  // 新增:第一作者图标
 } from '@heroicons/react/24/outline';
 import { Publication } from '@/types/publication';
 import { PublicationPageConfig } from '@/types/page';
@@ -38,7 +39,6 @@ const PublicationIcon = ({ type, className }: { type: Publication['type']; class
             title = 'Journal Article';
             break;
         case 'conference':
-            // This is the "Proceeding" icon the user mentioned for 'inproceedings'
             IconComponent = ClipboardDocumentIcon;
             title = 'Conference Paper / Proceeding';
             break;
@@ -75,9 +75,46 @@ export default function PublicationsList({ config, publications, embedded = fals
     const [searchQuery, setSearchQuery] = useState('');
     const [selectedYear, setSelectedYear] = useState<number | 'all'>('all');
     const [selectedType, setSelectedType] = useState<string | 'all'>('all');
+    const [selectedAuthorPosition, setSelectedAuthorPosition] = useState<'all' | 'first'>('all');  // 新增
     const [showFilters, setShowFilters] = useState(false);
     const [expandedBibtexId, setExpandedBibtexId] = useState<string | null>(null);
     const [expandedAbstractId, setExpandedAbstractId] = useState<string | null>(null);
+
+    // 判断是否为第一作者(包括共同第一作者)
+    const isFirstAuthor = (pub: Publication): boolean => {
+        if (!pub.authors || pub.authors.length === 0) return false;
+
+        // 情况1: 你在第一位且被高亮
+        if (pub.authors[0].isHighlighted === true) {
+            return true;
+        }
+
+        // 情况2: 你在第二位且被高亮
+        // 判断是否为共同第一作者的几种方式:
+        // a) description 中包含 "equal contribution" 或 "share the first authorship"
+        // b) 第一作者也有 † 标记(共同第一作者的常见标记)
+        // c) 前两位作者都被高亮
+        if (pub.authors.length >= 2 && pub.authors[1].isHighlighted === true) {
+            const description = pub.description?.toLowerCase() || '';
+            const hasEqualContribution =
+                description.includes('equal contribution') ||
+                description.includes('share the first authorship') ||
+                description.includes('co-first author') ||
+                description.includes('contributed equally');
+
+            // 如果 description 明确说明是共同第一作者,则算第一作者
+            if (hasEqualContribution) {
+                return true;
+            }
+
+            // 如果前两位作者都被高亮,也可能是共同第一作者
+            if (pub.authors[0].isHighlighted) {
+                return true;
+            }
+        }
+
+        return false;
+    };
 
     // Extract unique years and types for filters
     const years = useMemo(() => {
@@ -90,6 +127,18 @@ export default function PublicationsList({ config, publications, embedded = fals
         return uniqueTypes.sort();
     }, [publications]);
 
+    // 统计第一作者论文数量(根据当前 Year 和 Type 过滤)
+    const firstAuthorCount = useMemo(() => {
+        return publications.filter(pub => {
+            // 先应用 Year 和 Type 过滤
+            const yearMatch = selectedYear === 'all' || pub.year === selectedYear;
+            const typeMatch = selectedType === 'all' || pub.type === selectedType;
+
+            // 再判断是否为第一作者
+            return yearMatch && typeMatch && isFirstAuthor(pub);
+        }).length;
+    }, [publications, selectedYear, selectedType]);
+
     // Filter publications
     const filteredPublications = useMemo(() => {
         return publications.filter(pub => {
@@ -101,10 +150,11 @@ export default function PublicationsList({ config, publications, embedded = fals
 
             const matchesYear = selectedYear === 'all' || pub.year === selectedYear;
             const matchesType = selectedType === 'all' || pub.type === selectedType;
+            const matchesAuthorPosition = selectedAuthorPosition === 'all' || isFirstAuthor(pub);  // 新增
 
-            return matchesSearch && matchesYear && matchesType;
+            return matchesSearch && matchesYear && matchesType && matchesAuthorPosition;  // 修改
         });
-    }, [publications, searchQuery, selectedYear, selectedType]);
+    }, [publications, searchQuery, selectedYear, selectedType, selectedAuthorPosition]);
 
     return (
         <motion.div
@@ -224,10 +274,48 @@ export default function PublicationsList({ config, publications, embedded = fals
                                         ))}
                                     </div>
                                 </div>
+
+                                {/* Author Position Filter - 新增 */}
+                                <div className="space-y-2">
+                                    <label className="text-sm font-medium text-neutral-700 dark:text-neutral-300 flex items-center">
+                                        <UserIcon className="h-4 w-4 mr-1" /> Author Position
+                                    </label>
+                                    <div className="flex flex-wrap gap-2">
+                                        <button
+                                            onClick={() => setSelectedAuthorPosition('all')}
+                                            className={cn(
+                                                "px-3 py-1 text-xs rounded-full transition-colors",
+                                                selectedAuthorPosition === 'all'
+                                                    ? "bg-accent text-white"
+                                                    : "bg-white dark:bg-neutral-800 text-neutral-600 hover:bg-neutral-100 dark:hover:bg-neutral-700"
+                                            )}
+                                        >
+                                            All
+                                        </button>
+                                        <button
+                                            onClick={() => setSelectedAuthorPosition('first')}
+                                            className={cn(
+                                                "px-3 py-1 text-xs rounded-full transition-colors",
+                                                selectedAuthorPosition === 'first'
+                                                    ? "bg-accent text-white"
+                                                    : "bg-white dark:bg-neutral-800 text-neutral-600 hover:bg-neutral-100 dark:hover:bg-neutral-700"
+                                            )}
+                                        >
+                                            First Author ({firstAuthorCount})
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
                         </motion.div>
                     )}
                 </AnimatePresence>
+            </div>
+
+            {/* Results Count - 修改 */}
+            <div className="mb-4 text-sm text-neutral-600 dark:text-neutral-400">
+                Showing <span className="font-semibold text-accent">{filteredPublications.length}</span> of{' '}
+                <span className="font-semibold">{publications.length}</span> publications
+                {selectedAuthorPosition === 'first' && ' (First author only)'}
             </div>
 
             {/* Publications Grid */}
@@ -265,10 +353,19 @@ export default function PublicationsList({ config, publications, embedded = fals
                                         {/* Publication Type Icon */}
                                         <PublicationIcon type={pub.type} className='mr-3 mt-1' />
 
-                                        <div>
-                                            <h3 className={`${embedded ? "text-lg" : "text-xl"} font-semibold text-primary leading-tight`}>
-                                                {pub.title}
-                                            </h3>
+                                        <div className="flex-grow">
+                                            <div className="flex items-start gap-2">
+                                                <h3 className={`${embedded ? "text-lg" : "text-xl"} font-semibold text-primary leading-tight flex-grow`}>
+                                                    {pub.title}
+                                                </h3>
+                                                {/* First Author Badge - 新增 */}
+                                                {isFirstAuthor(pub) && (
+                                                    <span className="inline-flex items-center px-2 py-1 text-xs font-medium bg-accent/10 text-accent rounded-full whitespace-nowrap">
+                                                        <UserIcon className="h-3 w-3 mr-1" />
+                                                        1st Author
+                                                    </span>
+                                                )}
+                                            </div>
                                         </div>
                                     </div>
 
@@ -389,7 +486,6 @@ export default function PublicationsList({ config, publications, embedded = fals
                                                     <button
                                                         onClick={() => {
                                                             navigator.clipboard.writeText(pub.bibtex || '');
-                                                            // Optional: Show copied feedback
                                                         }}
                                                         className="absolute top-2 right-2 p-1.5 rounded-md bg-white dark:bg-neutral-700 text-neutral-500 hover:text-accent shadow-sm border border-neutral-200 dark:border-neutral-600 transition-colors"
                                                         title="Copy to clipboard"

@@ -5,16 +5,15 @@ description = "Professional services and community involvement."
 
 [[items]]
 title = "Reviewer"
-subtitle = "EACL 2026"
+subtitle = "ACL 2026, EACL 2026"
 date = "2026"
 
 [[items]]
 title = "Reviewer"
-subtitle = "IJCNLP-AACL 2025, EMNLP 2025, ACL 2025, COLING 2025, ICLR 2025"
+subtitle = "IJCNLP-AACL 2025, EMNLP 2025, ACL 2025, COLING 2025, ICLR 2025, NAACL 2025"
 date = "2025"
 
 [[items]]
 title = "Reviewer"
-subtitle = "ARR December, NAACL 2025"
+subtitle = "ARR December"
 date = "2024"
-#content = "Reviewed papers for..."

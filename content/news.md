@@ -1,4 +1,4 @@
-**2025-11-14:** One co-authored paper led by [Shengyun](https://shengyun-si.github.io/) on Paper2Figure benchmark 🎨 in submission. 
+**2025-11-14:** One co-authored paper led by [Shengyun Si](https://shengyun-si.github.io/) on Paper2Figure benchmark 🎨 in submission. 
 
 **2025-09-27:** 📝 One paper about multilingual counterfactual evaluation in collaboration with LMU and Uni Marburg in submission.
 

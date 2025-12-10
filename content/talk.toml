@@ -6,6 +6,7 @@ title = "Truth or Twist? Optimal Model Selection for Reliable Label Flipping Eva
 subtitle = "Oral Presentation"
 date = "2025-11-01"
 tags=["INLG 2025"]
+image = "inlg2025.jpg"
 
 [[items]]
 title = "FitCF: A Framework for Automatic Feature Importance-guided Counterfactual Example Generation"
