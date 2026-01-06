@@ -44,11 +44,11 @@ export default function Navigation({ items, siteTitle, enableOnePageMode }: Navi
           if (entry.isIntersecting) {
             // Update active hash based on intersecting section
             const id = entry.target.id;
-            // Only update if we are not currently scrolling to a target (optional refinement, 
+            // Only update if we are not currently scrolling to a target (optional refinement,
             // but for now simple intersection is enough, we might want to debounce or check intersection ratio)
             // We use history.replaceState to update URL without jumping or window.location.hash which might jump
             // But for the nav highlighting, we just need to update local state if we want it to be responsive
-            // However, the requirement says "nav bar did not change". 
+            // However, the requirement says "nav bar did not change".
             // Let's update the activeHash state.
             setActiveHash(id === 'about' ? '' : `#${id}`);
           }

@@ -16,7 +16,10 @@ import {
     BookOpenIcon as BookIcon,
     CpuChipIcon,
     CodeBracketIcon,
-    UserIcon  // 新增:第一作者图标
+    UserIcon,
+    InformationCircleIcon,
+    ChevronDownIcon,
+    XMarkIcon
 } from '@heroicons/react/24/outline';
 import { Publication } from '@/types/publication';
 import { PublicationPageConfig } from '@/types/page';
@@ -75,25 +78,22 @@ export default function PublicationsList({ config, publications, embedded = fals
     const [searchQuery, setSearchQuery] = useState('');
     const [selectedYear, setSelectedYear] = useState<number | 'all'>('all');
     const [selectedType, setSelectedType] = useState<string | 'all'>('all');
-    const [selectedAuthorPosition, setSelectedAuthorPosition] = useState<'all' | 'first'>('all');  // 新增
+    const [selectedAuthorPosition, setSelectedAuthorPosition] = useState<'all' | 'first'>('all');
     const [showFilters, setShowFilters] = useState(false);
+    const [showNote, setShowNote] = useState(false);
     const [expandedBibtexId, setExpandedBibtexId] = useState<string | null>(null);
     const [expandedAbstractId, setExpandedAbstractId] = useState<string | null>(null);
+    const [expandedAuthorsId, setExpandedAuthorsId] = useState<string | null>(null);
+    const [previewImage, setPreviewImage] = useState<string | null>(null);
 
     // 判断是否为第一作者(包括共同第一作者)
     const isFirstAuthor = (pub: Publication): boolean => {
         if (!pub.authors || pub.authors.length === 0) return false;
 
-        // 情况1: 你在第一位且被高亮
         if (pub.authors[0].isHighlighted === true) {
             return true;
         }
 
-        // 情况2: 你在第二位且被高亮
-        // 判断是否为共同第一作者的几种方式:
-        // a) description 中包含 "equal contribution" 或 "share the first authorship"
-        // b) 第一作者也有 † 标记(共同第一作者的常见标记)
-        // c) 前两位作者都被高亮
         if (pub.authors.length >= 2 && pub.authors[1].isHighlighted === true) {
             const description = pub.description?.toLowerCase() || '';
             const hasEqualContribution =
@@ -102,12 +102,10 @@ export default function PublicationsList({ config, publications, embedded = fals
                 description.includes('co-first author') ||
                 description.includes('contributed equally');
 
-            // 如果 description 明确说明是共同第一作者,则算第一作者
             if (hasEqualContribution) {
                 return true;
             }
 
-            // 如果前两位作者都被高亮,也可能是共同第一作者
             if (pub.authors[0].isHighlighted) {
                 return true;
             }
@@ -127,14 +125,11 @@ export default function PublicationsList({ config, publications, embedded = fals
         return uniqueTypes.sort();
     }, [publications]);
 
-    // 统计第一作者论文数量(根据当前 Year 和 Type 过滤)
+    // 统计第一作者论文数量
     const firstAuthorCount = useMemo(() => {
         return publications.filter(pub => {
-            // 先应用 Year 和 Type 过滤
             const yearMatch = selectedYear === 'all' || pub.year === selectedYear;
             const typeMatch = selectedType === 'all' || pub.type === selectedType;
-
-            // 再判断是否为第一作者
             return yearMatch && typeMatch && isFirstAuthor(pub);
         }).length;
     }, [publications, selectedYear, selectedType]);
@@ -150,9 +145,9 @@ export default function PublicationsList({ config, publications, embedded = fals
 
             const matchesYear = selectedYear === 'all' || pub.year === selectedYear;
             const matchesType = selectedType === 'all' || pub.type === selectedType;
-            const matchesAuthorPosition = selectedAuthorPosition === 'all' || isFirstAuthor(pub);  // 新增
+            const matchesAuthorPosition = selectedAuthorPosition === 'all' || isFirstAuthor(pub);
 
-            return matchesSearch && matchesYear && matchesType && matchesAuthorPosition;  // 修改
+            return matchesSearch && matchesYear && matchesType && matchesAuthorPosition;
         });
     }, [publications, searchQuery, selectedYear, selectedType, selectedAuthorPosition]);
 
@@ -165,9 +160,11 @@ export default function PublicationsList({ config, publications, embedded = fals
             <div className="mb-8">
                 <h1 className={`${embedded ? "text-2xl" : "text-4xl"} font-serif font-bold text-primary mb-4`}>{config.title}</h1>
                 {config.description && (
-                    <p className={`${embedded ? "text-base" : "text-lg"} text-neutral-600 dark:text-neutral-500 max-w-2xl`}>
-                        {config.description}
-                    </p>
+                    <div className="max-w-2xl">
+                        <p className={`${embedded ? "text-base" : "text-lg"} text-neutral-600 dark:text-neutral-500 inline`}>
+                            {config.description}
+                        </p>
+                    </div>
                 )}
             </div>
 
@@ -275,7 +272,7 @@ export default function PublicationsList({ config, publications, embedded = fals
                                     </div>
                                 </div>
 
-                                {/* Author Position Filter - 新增 */}
+                                {/* Author Position Filter */}
                                 <div className="space-y-2">
                                     <label className="text-sm font-medium text-neutral-700 dark:text-neutral-300 flex items-center">
                                         <UserIcon className="h-4 w-4 mr-1" /> Author Position
@@ -311,7 +308,7 @@ export default function PublicationsList({ config, publications, embedded = fals
                 </AnimatePresence>
             </div>
 
-            {/* Results Count - 修改 */}
+            {/* Results Count */}
             <div className="mb-4 text-sm text-neutral-600 dark:text-neutral-400">
                 Showing <span className="font-semibold text-accent">{filteredPublications.length}</span> of{' '}
                 <span className="font-semibold">{publications.length}</span> publications
@@ -336,14 +333,22 @@ export default function PublicationsList({ config, publications, embedded = fals
                             <div className="flex flex-col md:flex-row gap-6">
                                 {pub.preview && (
                                     <div className="w-full md:w-48 flex-shrink-0">
-                                        <div className="aspect-video md:aspect-[4/3] relative rounded-lg overflow-hidden bg-neutral-100 dark:bg-neutral-800">
+                                        <div
+                                            className="aspect-video md:aspect-[4/3] relative rounded-lg overflow-hidden bg-neutral-100 dark:bg-neutral-800 cursor-pointer group"
+                                            onClick={() => setPreviewImage(`/papers/${pub.preview}`)}
+                                        >
                                             <Image
                                                 src={`/papers/${pub.preview}`}
                                                 alt={pub.title}
                                                 fill
-                                                className="object-cover"
+                                                className="object-cover transition-transform duration-300 group-hover:scale-105"
                                                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                                             />
+                                            <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300 flex items-center justify-center">
+                                                <span className="text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-sm font-medium">
+                                                    Click to preview
+                                                </span>
+                                            </div>
                                         </div>
                                     </div>
                                 )}
@@ -358,7 +363,7 @@ export default function PublicationsList({ config, publications, embedded = fals
                                                 <h3 className={`${embedded ? "text-lg" : "text-xl"} font-semibold text-primary leading-tight flex-grow`}>
                                                     {pub.title}
                                                 </h3>
-                                                {/* First Author Badge - 新增 */}
+                                                {/* First Author Badge */}
                                                 {isFirstAuthor(pub) && (
                                                     <span className="inline-flex items-center px-2 py-1 text-xs font-medium bg-accent/10 text-accent rounded-full whitespace-nowrap">
                                                         <UserIcon className="h-3 w-3 mr-1" />
@@ -369,19 +374,67 @@ export default function PublicationsList({ config, publications, embedded = fals
                                         </div>
                                     </div>
 
-                                    <p className={`${embedded ? "text-sm" : "text-base"} text-neutral-600 dark:text-neutral-400 mb-2 pl-11`}>
-                                        {pub.authors.map((author, idx) => (
-                                            <span key={idx}>
-                                                <span className={author.isHighlighted ? 'font-semibold text-accent' : ''}>
-                                                    {author.name}
-                                                </span>
-                                                {author.isCorresponding && (
-                                                    <sup className={`ml-0 ${author.isHighlighted ? 'text-accent' : 'text-neutral-600 dark:text-neutral-400'}`}>†</sup>
-                                                )}
-                                                {idx < pub.authors.length - 1 && ', '}
-                                            </span>
-                                        ))}
-                                    </p>
+                                    {/* Authors with expand/collapse */}
+                                    <div className={`${embedded ? "text-sm" : "text-base"} text-neutral-600 dark:text-neutral-400 mb-2 pl-11`}>
+                                        {(() => {
+                                            const maxAuthors = 7;
+                                            const isExpanded = expandedAuthorsId === pub.id;
+
+                                            const lastAuthor = pub.authors[pub.authors.length - 1];
+                                            const lastIsVeraSchmitt = lastAuthor?.name?.toLowerCase().includes('vera schmitt');
+
+                                            const shouldTruncate = (pub.authors.length > maxAuthors || lastIsVeraSchmitt) && !isExpanded;
+
+                                            let displayedAuthors;
+                                            let hiddenCount;
+
+                                            if (shouldTruncate) {
+                                                if (lastIsVeraSchmitt && pub.authors.length <= maxAuthors) {
+                                                    displayedAuthors = pub.authors.slice(0, -1);
+                                                    hiddenCount = 1;
+                                                } else {
+                                                    displayedAuthors = pub.authors.slice(0, maxAuthors);
+                                                    hiddenCount = pub.authors.length - maxAuthors;
+                                                }
+                                            } else {
+                                                displayedAuthors = pub.authors;
+                                                hiddenCount = 0;
+                                            }
+
+                                            return (
+                                                <>
+                                                    {displayedAuthors.map((author, idx) => (
+                                                        <span key={idx}>
+                                                            <span className={author.isHighlighted ? 'font-semibold text-accent' : ''}>
+                                                                {author.name}
+                                                            </span>
+                                                            {author.isCorresponding && (
+                                                                <sup className={`ml-0 ${author.isHighlighted ? 'text-accent' : 'text-neutral-600 dark:text-neutral-400'}`}>†</sup>
+                                                            )}
+                                                            {idx < displayedAuthors.length - 1 && ', '}
+                                                        </span>
+                                                    ))}
+                                                    {shouldTruncate && hiddenCount > 0 && (
+                                                        <button
+                                                            onClick={() => setExpandedAuthorsId(pub.id)}
+                                                            className="ml-1 text-accent hover:underline cursor-pointer text-sm"
+                                                        >
+                                                            ... +{hiddenCount} more
+                                                        </button>
+                                                    )}
+                                                    {isExpanded && (pub.authors.length > maxAuthors || lastIsVeraSchmitt) && (
+                                                        <button
+                                                            onClick={() => setExpandedAuthorsId(null)}
+                                                            className="ml-1 text-accent hover:underline cursor-pointer text-sm"
+                                                        >
+                                                            (show less)
+                                                        </button>
+                                                    )}
+                                                </>
+                                            );
+                                        })()}
+                                    </div>
+
                                     <p className="text-sm font-medium text-neutral-800 dark:text-neutral-600 mb-3 pl-11">
                                         {pub.journal || pub.conference} {pub.year}
                                     </p>
@@ -502,6 +555,44 @@ export default function PublicationsList({ config, publications, embedded = fals
                     ))
                 )}
             </div>
+
+            {/* Image Preview Modal */}
+            <AnimatePresence>
+                {previewImage && (
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 0.2 }}
+                        className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4"
+                        onClick={() => setPreviewImage(null)}
+                    >
+                        <motion.div
+                            initial={{ scale: 0.9, opacity: 0 }}
+                            animate={{ scale: 1, opacity: 1 }}
+                            exit={{ scale: 0.9, opacity: 0 }}
+                            transition={{ duration: 0.2 }}
+                            className="relative max-w-5xl max-h-[90vh] w-full"
+                            onClick={(e) => e.stopPropagation()}
+                        >
+                            <Image
+                                src={previewImage}
+                                alt="Preview"
+                                width={1600}
+                                height={1200}
+                                className="w-full h-auto max-h-[90vh] object-contain rounded-lg"
+                            />
+                            <button
+                                onClick={() => setPreviewImage(null)}
+                                className="absolute top-4 right-4 p-2 rounded-full bg-black/50 text-white hover:bg-black/70 transition-colors"
+                                title="Close preview"
+                            >
+                                <XMarkIcon className="w-6 h-6" />
+                            </button>
+                        </motion.div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
         </motion.div>
     );
 }

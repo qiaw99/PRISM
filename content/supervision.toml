@@ -10,14 +10,14 @@ tags = ["B.Sc."]
 category = "thesis"
 
 [[items]]
-title = "Are multilingual Self-Explanations faithful?"
+title = "Why Self-Explanations should not be trusted? Analyzing Faithfulness Across Tasks, Models, and Languages"
 subtitle = "Nico Tananow"
 date = "Ongoing"
 tags = ["M.Sc."]
 category = "thesis"
 
 [[items]]
-title = "EffiCoC: Efficient Chain-of-Code with CodeLLMs"
+title = "Towards Efficient Chain-of-Thought Reasoning with CodeLLMs"
 subtitle = "Jiaao Li"
 date = "WS2025/26"
 tags = ["M.Sc."]
@@ -34,7 +34,7 @@ category = "thesis"
 title = "AIGC: Automatic Iterative Generation for Counterfactuals"
 subtitle = "Yilong Wang"
 date = "WS2025/26"
-content = "A paper titled \"iFlip: A Feedback-Driven Framework for Iterative Counterfactual Example Refinement\", which builds upon the thesis, is submitted to ACL 2026."
+content = "A paper titled \"iFlip: Iterative Feedback-driven Counterfactual Example Refinement\", which builds upon the thesis, is submitted to ACL 2026."
 tags = ["B.Sc."]
 category = "thesis"
 

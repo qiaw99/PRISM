@@ -16,11 +16,13 @@ import { Metadata } from 'next';
 
 export function generateStaticParams() {
     const config = getConfig();
+    const validTypes = ['page', 'publication', 'card', 'text']; // 所有有效的页面类型
+
     return config.navigation
-        .filter(nav => nav.type === 'page' && nav.target !== 'about') // 'about' is handled by root page
-        .map(nav => ({
-            slug: nav.target,
-        }));
+    .filter(nav => validTypes.includes(nav.type) && nav.target !== 'about')
+    .map(nav => ({
+      slug: nav.target,
+    }));
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {

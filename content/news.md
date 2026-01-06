@@ -1,3 +1,5 @@
+**2026-01-06**: Two first-authored and three co-authored papers in submission about (1) _how quantization affects self-explanations_❓collaborated with [Pepa Atanasova](https://apepa.github.io/); (2) _feedback-driven iterative counterfactual refinement_; (3) _NLG evaluation trend survey_ led by [Jing Yang](https://jingyng.github.io/); (4) _claim-level grounding traceable generation_ led by [Bohao Chu](https://www.chubohao.com/); (5) _mechanistic interpretability application survey_ led by [Hengyuan Zhang](https://rattlesnakey.github.io/).
+
 **2025-11-14:** One co-authored paper led by [Shengyun Si](https://shengyun-si.github.io/) on Paper2Figure benchmark 🎨 in submission. 
 
 **2025-09-27:** 📝 One paper about multilingual counterfactual evaluation in collaboration with LMU and Uni Marburg in submission.

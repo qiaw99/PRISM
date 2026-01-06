@@ -6,8 +6,9 @@ const nextConfig: NextConfig = {
   images: {
     unoptimized: true,
   },
-  // 完全移除 transpilePackages
-
+  experimental: {
+    disableOptimizedLoading: true,
+  },
   webpack: (config) => {
     config.module.rules.push({
       test: /\.bib$/,

@@ -4,6 +4,7 @@ import Navigation from "@/components/layout/Navigation";
 import Footer from "@/components/layout/Footer";
 import { ThemeProvider } from "@/components/ui/ThemeProvider";
 import { getConfig } from "@/lib/config";
+import RedirectHandler from '@/components/RedirectHandler';
 
 export async function generateMetadata(): Promise<Metadata> {
   const config = getConfig();
@@ -98,6 +99,7 @@ export default function RootLayout({
         />
       </head>
       <body className={`font-sans antialiased`}>
+        <RedirectHandler />
         <ThemeProvider>
           <Navigation
             items={config.navigation}

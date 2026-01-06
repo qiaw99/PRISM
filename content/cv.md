@@ -1,4 +1,4 @@
-# Education Background 👨‍🎓
+ # Education Background 👨‍🎓
 
 2024.07-ongoing: Computer Science, Ph.D., Technische Universität Berlin. Supervised by Prof. Dr. Sebastian Möller.
 
@@ -6,7 +6,7 @@
 
 2021.10-2023.10: Computer Science, M.Sc., Technische Universität Berlin. Supervised by [Dr.-Ing. Nils Feldhus](https://nfelnlp.github.io/) and [Dr.-Ing. Leonhard Hennig](https://www.dfki.de/web/ueber-uns/mitarbeiter/person/lehe02): _A Singular LLM is all you need for dialogue-based explanation regarding NLP tasks_.
 
-2018.10-2021.09: Computer Science, B.Sc., Freie Universität Berlin. Supervised by [Prof. Dr. László Kozma](https://www.mi.fu-berlin.de/inf/groups/ag-ti/members/professoren/Kozma_Laszlo.html): _Understanding and implementation of the algorithm for three-coloring in triangle-free planar graphs_.
+2018.10-2021.09: Computer Science, B.Sc., Freie Universität Berlin. Supervised by [Prof. Dr. László Kozma](https://www.lkozma.net/): _Understanding and implementation of the algorithm for three-coloring in triangle-free planar graphs_.
 
 
 # Jobs 🧑‍💻

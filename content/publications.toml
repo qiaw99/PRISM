@@ -2,3 +2,4 @@ type = "publication"
 title = "Publications"
 description = "A collection of my research work. († denotes equal contribution)"
 source = "publications.bib"
+#Please note: although Vera Schmitt appears in most of my papers, she is listed exclusively in her capacity for funding acquisition (not even as the official PI) of my funded project and not as a research contributor.
