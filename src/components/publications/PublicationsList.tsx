@@ -17,8 +17,6 @@ import {
     CpuChipIcon,
     CodeBracketIcon,
     UserIcon,
-    InformationCircleIcon,
-    ChevronDownIcon,
     XMarkIcon
 } from '@heroicons/react/24/outline';
 import { Publication } from '@/types/publication';
@@ -80,7 +78,6 @@ export default function PublicationsList({ config, publications, embedded = fals
     const [selectedType, setSelectedType] = useState<string | 'all'>('all');
     const [selectedAuthorPosition, setSelectedAuthorPosition] = useState<'all' | 'first'>('all');
     const [showFilters, setShowFilters] = useState(false);
-    const [showNote, setShowNote] = useState(false);
     const [expandedBibtexId, setExpandedBibtexId] = useState<string | null>(null);
     const [expandedAbstractId, setExpandedAbstractId] = useState<string | null>(null);
     const [expandedAuthorsId, setExpandedAuthorsId] = useState<string | null>(null);
