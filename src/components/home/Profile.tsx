@@ -331,7 +331,7 @@ export default function Profile({ author, social, features, researchInterests }:
                     <a href="https://clustrmaps.com/site/1c8o4" title="ClustrMaps">
                         {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img
-                            src="//www.clustrmaps.com/map_v2.png?d=tGUG9NkI1frMABLHvpyLVDTJpoves1PSvOUI8vbqBe8&cl=ffffff"
+                            src="//www.clustrmaps.com/map_v2.png?d=b7PhTR__EdwTtMoKkMK-wWZ54PM0utFYGGWNg6uEd8Q&cl=ffffff"
                             alt="Visitor Map"
                             className="rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200"
                         />
