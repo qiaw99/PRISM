@@ -1,4 +1,4 @@
-import { Publication, PublicationType, ResearchArea } from '@/types/publication';
+import { Publication, PublicationType, ResearchArea, TopicType } from '@/types/publication';
 
 // eslint-disable-next-line @typescript-eslint/no-require-imports
 const bibtexParse = require('bibtex-parse-js');
@@ -59,6 +59,12 @@ export function parseBibTeX(bibtexContent: string): Publication[] {
     // Parse preview field (remove braces if present)
     const preview = tags.preview?.replace(/[{}]/g, '');
 
+    // Parse topics field (comma-separated, convert spaces to hyphens)
+    const topics = tags.topics?.replace(/[{}]/g, '')
+      .split(',')
+      .map((t: string) => t.trim().toLowerCase().replace(/\s+/g, '-') as TopicType)
+      .filter((t: TopicType) => t) || undefined;
+
     // Create publication object
     const publication: Publication = {
       id: entry.citationKey || tags.id || `pub-${Date.now()}-${index}`,
@@ -85,9 +91,10 @@ export function parseBibTeX(bibtexContent: string): Publication[] {
       description: cleanBibTeXString(tags.description || tags.note),
       selected,
       preview,
+      topics,
 
       // Store original BibTeX (excluding custom fields)
-      bibtex: reconstructBibTeX(entry, ['selected', 'preview', 'description', 'keywords', 'code']),
+      bibtex: reconstructBibTeX(entry, ['selected', 'preview', 'description', 'keywords', 'code', 'topics']),
     };
 
     // Clean up undefined fields

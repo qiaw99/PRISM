@@ -1,9 +1,11 @@
 'use client';
 
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
 import { CardPageConfig, CardItem } from '@/types/page';
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
+import { FunnelIcon, AcademicCapIcon, CalendarIcon } from '@heroicons/react/24/outline';
+import { cn } from '@/lib/utils';
 
 // Extended card item type that includes optional image and category
 interface ExtendedCardItem extends CardItem {
@@ -12,20 +14,70 @@ interface ExtendedCardItem extends CardItem {
 }
 
 export default function CardPage({ config, embedded = false }: { config: CardPageConfig; embedded?: boolean }) {
-    // 按 category 分组
+    const [selectedDegree, setSelectedDegree] = useState<'all' | 'B.Sc.' | 'M.Sc.'>('all');
+    const [selectedStatus, setSelectedStatus] = useState<'all' | 'ongoing' | 'completed'>('all');
+    const [showFilters, setShowFilters] = useState(false);
+
+    // 检查是否是thesis类别的页面（有thesis category的item）
+    const hasThesisCategory = useMemo(() => {
+        return (config.items as ExtendedCardItem[]).some(item => item.category === 'thesis');
+    }, [config.items]);
+
+    // 判断item是否为ongoing状态
+    const isOngoing = (item: ExtendedCardItem): boolean => {
+        const date = item.date?.toLowerCase() || '';
+        return date === 'ongoing' || date.includes('ongoing');
+    };
+
+    // 过滤thesis items
+    const filteredThesisItems = useMemo(() => {
+        return (config.items as ExtendedCardItem[]).filter(item => {
+            // 只过滤thesis category
+            if (item.category !== 'thesis') return false;
+
+            // 学位过滤
+            const matchesDegree = selectedDegree === 'all' || item.tags?.includes(selectedDegree);
+
+            // 状态过滤
+            let matchesStatus = true;
+            if (selectedStatus === 'ongoing') {
+                matchesStatus = isOngoing(item);
+            } else if (selectedStatus === 'completed') {
+                matchesStatus = !isOngoing(item);
+            }
+
+            return matchesDegree && matchesStatus;
+        });
+    }, [config.items, selectedDegree, selectedStatus]);
+
+    // 获取所有thesis items（用于显示总数）
+    const allThesisItems = useMemo(() => {
+        return (config.items as ExtendedCardItem[]).filter(item => item.category === 'thesis');
+    }, [config.items]);
+
+    // 按 category 分组（thesis使用过滤后的items，其他保持原样）
     const groupedItems = useMemo(() => {
         const groups: Record<string, ExtendedCardItem[]> = {};
 
         (config.items as ExtendedCardItem[]).forEach(item => {
             const category = item.category || 'default';
-            if (!groups[category]) {
-                groups[category] = [];
+
+            // thesis category 使用过滤后的结果
+            if (category === 'thesis') {
+                if (!groups[category]) {
+                    groups[category] = filteredThesisItems;
+                }
+            } else {
+                // 其他 category 保持原样
+                if (!groups[category]) {
+                    groups[category] = [];
+                }
+                groups[category].push(item);
             }
-            groups[category].push(item);
         });
 
         return groups;
-    }, [config.items]);
+    }, [config.items, filteredThesisItems]);
 
     // 获取分组标题
     const getCategoryTitle = (category: string) => {
@@ -66,19 +118,113 @@ export default function CardPage({ config, embedded = false }: { config: CardPag
             </div>
 
             {/* 渲染分组 */}
-            {Object.entries(groupedItems).map(([category, items], groupIndex) => (
+            {Object.entries(groupedItems).filter(([category, items]) => items.length > 0 || category === 'thesis').map(([category, items], groupIndex) => (
                 <div key={category} className={groupIndex > 0 ? 'mt-12' : ''}>
                     {/* 分组标题 */}
                     {hasMultipleCategories && category !== 'default' && (
                         <div className="mb-6">
-                            <h2 className="text-2xl font-serif font-bold text-primary mb-2">
-                                {getCategoryTitle(category)}
-                            </h2>
+                            <div className="flex items-center justify-between mb-2">
+                                <h2 className="text-2xl font-serif font-bold text-primary">
+                                    {getCategoryTitle(category)}
+                                </h2>
+                                {/* Filter 按钮 - 只在 thesis 分组显示 */}
+                                {category === 'thesis' && (
+                                    <button
+                                        onClick={() => setShowFilters(!showFilters)}
+                                        className={cn(
+                                            "flex items-center justify-center px-3 py-1.5 rounded-lg border transition-all duration-200 text-sm",
+                                            showFilters
+                                                ? "bg-accent text-white border-accent"
+                                                : "bg-white dark:bg-neutral-900 border-neutral-200 dark:border-neutral-800 text-neutral-600 hover:border-accent hover:text-accent"
+                                        )}
+                                    >
+                                        <FunnelIcon className="h-4 w-4 mr-1.5" />
+                                        Filters
+                                    </button>
+                                )}
+                            </div>
                             {getCategoryDescription(category) && (
                                 <p className="text-base text-neutral-600 dark:text-neutral-500">
                                     {getCategoryDescription(category)}
                                 </p>
                             )}
+                        </div>
+                    )}
+
+                    {/* Thesis 过滤器面板 */}
+                    {category === 'thesis' && (
+                        <AnimatePresence>
+                            {showFilters && (
+                                <motion.div
+                                    initial={{ opacity: 0, height: 0 }}
+                                    animate={{ opacity: 1, height: 'auto' }}
+                                    exit={{ opacity: 0, height: 0 }}
+                                    className="overflow-hidden mb-6"
+                                >
+                                    <div className="p-4 bg-neutral-50 dark:bg-neutral-800/50 rounded-lg border border-neutral-200 dark:border-neutral-800 flex flex-wrap gap-6">
+                                        {/* Degree Filter */}
+                                        <div className="space-y-2">
+                                            <label className="text-sm font-medium text-neutral-700 dark:text-neutral-300 flex items-center">
+                                                <AcademicCapIcon className="h-4 w-4 mr-1" /> Degree
+                                            </label>
+                                            <div className="flex flex-wrap gap-2">
+                                                {(['all', 'B.Sc.', 'M.Sc.'] as const).map(degree => (
+                                                    <button
+                                                        key={degree}
+                                                        onClick={() => setSelectedDegree(degree)}
+                                                        className={cn(
+                                                            "px-3 py-1 text-xs rounded-full transition-colors",
+                                                            selectedDegree === degree
+                                                                ? "bg-accent text-white"
+                                                                : "bg-white dark:bg-neutral-800 text-neutral-600 hover:bg-neutral-100 dark:hover:bg-neutral-700"
+                                                        )}
+                                                    >
+                                                        {degree === 'all' ? 'All' : degree}
+                                                    </button>
+                                                ))}
+                                            </div>
+                                        </div>
+
+                                        {/* Status Filter */}
+                                        <div className="space-y-2">
+                                            <label className="text-sm font-medium text-neutral-700 dark:text-neutral-300 flex items-center">
+                                                <CalendarIcon className="h-4 w-4 mr-1" /> Status
+                                            </label>
+                                            <div className="flex flex-wrap gap-2">
+                                                {(['all', 'ongoing', 'completed'] as const).map(status => (
+                                                    <button
+                                                        key={status}
+                                                        onClick={() => setSelectedStatus(status)}
+                                                        className={cn(
+                                                            "px-3 py-1 text-xs rounded-full transition-colors capitalize",
+                                                            selectedStatus === status
+                                                                ? "bg-accent text-white"
+                                                                : "bg-white dark:bg-neutral-800 text-neutral-600 hover:bg-neutral-100 dark:hover:bg-neutral-700"
+                                                        )}
+                                                    >
+                                                        {status === 'all' ? 'All' : status}
+                                                    </button>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {/* Results Count */}
+                                    {(selectedDegree !== 'all' || selectedStatus !== 'all') && (
+                                        <div className="mt-3 text-sm text-neutral-600 dark:text-neutral-400">
+                                            Showing <span className="font-semibold text-accent">{filteredThesisItems.length}</span> of{' '}
+                                            <span className="font-semibold">{allThesisItems.length}</span> theses
+                                        </div>
+                                    )}
+                                </motion.div>
+                            )}
+                        </AnimatePresence>
+                    )}
+
+                    {/* 空结果提示 - 只在thesis过滤无结果时显示 */}
+                    {category === 'thesis' && items.length === 0 && (selectedDegree !== 'all' || selectedStatus !== 'all') && (
+                        <div className="text-center py-8 text-neutral-500">
+                            No theses found matching your criteria.
                         </div>
                     )}
 

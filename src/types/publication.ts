@@ -45,6 +45,7 @@ export interface Publication {
   summary?: string;
   researchArea: ResearchArea;
   description?: string;
+  topics?: TopicType[];
 }
 
 export type PublicationType =
@@ -77,4 +78,13 @@ export type ResearchArea =
   | 'transformer-architectures'
   | 'biomedical-engineering'
   | 'other';
+
+export type TopicType =
+  | 'counterfactual'
+  | 'conversational-xai'
+  | 'faithfulness'
+  | 'interpretability'
+  | 'multilingual'
+  | 'rationale'
+  | 'misc';
 

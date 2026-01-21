@@ -17,7 +17,8 @@ import {
     CpuChipIcon,
     CodeBracketIcon,
     UserIcon,
-    XMarkIcon
+    XMarkIcon,
+    TagIcon
 } from '@heroicons/react/24/outline';
 import { Publication } from '@/types/publication';
 import { PublicationPageConfig } from '@/types/page';
@@ -72,10 +73,49 @@ const PublicationIcon = ({ type, className }: { type: Publication['type']; class
 
 // ------------------------------------
 
+// Topic display names and colors
+const topicConfig: Record<string, { label: string; color: string }> = {
+    'counterfactual': { label: 'Counterfactual', color: 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400' },
+    'conversational-xai': { label: 'Conversational XAI', color: 'bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400' },
+    'faithfulness': { label: 'Faithfulness', color: 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' },
+    'interpretability': { label: 'Interpretability', color: 'bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-400' },
+    'multilingual': { label: 'Multilingual', color: 'bg-pink-100 text-pink-700 dark:bg-pink-900/30 dark:text-pink-400' },
+    'rationale': { label: 'Rationale', color: 'bg-teal-100 text-teal-700 dark:bg-teal-900/30 dark:text-teal-400' },
+    'misc': { label: 'Misc', color: 'bg-gray-100 text-gray-700 dark:bg-gray-900/30 dark:text-gray-400' },
+};
+
+const TopicBadges = ({ topics, className }: { topics?: string[]; className?: string }) => {
+    if (!topics || topics.length === 0) return null;
+
+    return (
+        <div className={cn("flex flex-wrap gap-1", className)}>
+            {topics.map((topic) => {
+                const config = topicConfig[topic];
+                if (!config) return null;
+                return (
+                    <button
+                        key={topic}
+                        type="button"
+                        onClick={() => {}}
+                        className={cn(
+                            "inline-flex items-center px-2.5 py-1 text-xs font-medium rounded-full whitespace-nowrap transition-all duration-200 cursor-pointer",
+                            "hover:scale-105 hover:shadow-sm active:scale-95",
+                            config.color
+                        )}
+                    >
+                        {config.label}
+                    </button>
+                );
+            })}
+        </div>
+    );
+};
+
 export default function PublicationsList({ config, publications, embedded = false }: PublicationsListProps) {
     const [searchQuery, setSearchQuery] = useState('');
     const [selectedYear, setSelectedYear] = useState<number | 'all'>('all');
     const [selectedType, setSelectedType] = useState<string | 'all'>('all');
+    const [selectedTopic, setSelectedTopic] = useState<string | 'all'>('all');
     const [selectedAuthorPosition, setSelectedAuthorPosition] = useState<'all' | 'first'>('all');
     const [showFilters, setShowFilters] = useState(false);
     const [expandedBibtexId, setExpandedBibtexId] = useState<string | null>(null);
@@ -122,14 +162,22 @@ export default function PublicationsList({ config, publications, embedded = fals
         return uniqueTypes.sort();
     }, [publications]);
 
+    // Extract unique topics for filter
+    const topics = useMemo(() => {
+        const allTopics = publications.flatMap(p => p.topics || []);
+        const uniqueTopics = Array.from(new Set(allTopics));
+        return uniqueTopics.sort();
+    }, [publications]);
+
     // 统计第一作者论文数量
     const firstAuthorCount = useMemo(() => {
         return publications.filter(pub => {
             const yearMatch = selectedYear === 'all' || pub.year === selectedYear;
             const typeMatch = selectedType === 'all' || pub.type === selectedType;
-            return yearMatch && typeMatch && isFirstAuthor(pub);
+            const topicMatch = selectedTopic === 'all' || pub.topics?.includes(selectedTopic as never);
+            return yearMatch && typeMatch && topicMatch && isFirstAuthor(pub);
         }).length;
-    }, [publications, selectedYear, selectedType]);
+    }, [publications, selectedYear, selectedType, selectedTopic]);
 
     // Filter publications
     const filteredPublications = useMemo(() => {
@@ -142,11 +190,12 @@ export default function PublicationsList({ config, publications, embedded = fals
 
             const matchesYear = selectedYear === 'all' || pub.year === selectedYear;
             const matchesType = selectedType === 'all' || pub.type === selectedType;
+            const matchesTopic = selectedTopic === 'all' || pub.topics?.includes(selectedTopic as never);
             const matchesAuthorPosition = selectedAuthorPosition === 'all' || isFirstAuthor(pub);
 
-            return matchesSearch && matchesYear && matchesType && matchesAuthorPosition;
+            return matchesSearch && matchesYear && matchesType && matchesTopic && matchesAuthorPosition;
         });
-    }, [publications, searchQuery, selectedYear, selectedType, selectedAuthorPosition]);
+    }, [publications, searchQuery, selectedYear, selectedType, selectedTopic, selectedAuthorPosition]);
 
     return (
         <motion.div
@@ -264,6 +313,40 @@ export default function PublicationsList({ config, publications, embedded = fals
                                                 )}
                                             >
                                                 {type.replace('-', ' ')}
+                                            </button>
+                                        ))}
+                                    </div>
+                                </div>
+
+                                {/* Topic Filter */}
+                                <div className="space-y-2">
+                                    <label className="text-sm font-medium text-neutral-700 dark:text-neutral-300 flex items-center">
+                                        <TagIcon className="h-4 w-4 mr-1" /> Topic
+                                    </label>
+                                    <div className="flex flex-wrap gap-2">
+                                        <button
+                                            onClick={() => setSelectedTopic('all')}
+                                            className={cn(
+                                                "px-3 py-1 text-xs rounded-full transition-colors",
+                                                selectedTopic === 'all'
+                                                    ? "bg-accent text-white"
+                                                    : "bg-white dark:bg-neutral-800 text-neutral-600 hover:bg-neutral-100 dark:hover:bg-neutral-700"
+                                            )}
+                                        >
+                                            All
+                                        </button>
+                                        {topics.map(topic => (
+                                            <button
+                                                key={topic}
+                                                onClick={() => setSelectedTopic(topic)}
+                                                className={cn(
+                                                    "px-3 py-1 text-xs rounded-full transition-colors",
+                                                    selectedTopic === topic
+                                                        ? topicConfig[topic]?.color || "bg-accent text-white"
+                                                        : "bg-white dark:bg-neutral-800 text-neutral-600 hover:bg-neutral-100 dark:hover:bg-neutral-700"
+                                                )}
+                                            >
+                                                {topicConfig[topic]?.label || topic}
                                             </button>
                                         ))}
                                     </div>
@@ -442,66 +525,70 @@ export default function PublicationsList({ config, publications, embedded = fals
                                         </p>
                                     )}
 
-                                    {/* Link Buttons */}
-                                    <div className="flex flex-wrap gap-2 mt-auto">
+                                    {/* Link Buttons and Topic Badges */}
+                                    <div className="flex flex-wrap items-center justify-between gap-2 mt-auto">
+                                        <div className="flex flex-wrap gap-2">
+                                            {/* URL Link Button (for Paper/External Link) */}
+                                            {pub.url && (
+                                                <a
+                                                    href={pub.url}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                    className="inline-flex items-center px-3 py-1 rounded-md text-xs font-medium bg-neutral-100 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300 hover:bg-accent hover:text-white transition-colors"
+                                                >
+                                                    <ArrowTopRightOnSquareIcon className="h-3 w-3 mr-1.5" />
+                                                    Paper
+                                                </a>
+                                            )}
 
-                                        {/* URL Link Button (for Paper/External Link) */}
-                                        {pub.url && (
-                                            <a
-                                                href={pub.url}
-                                                target="_blank"
-                                                rel="noopener noreferrer"
-                                                className="inline-flex items-center px-3 py-1 rounded-md text-xs font-medium bg-neutral-100 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300 hover:bg-accent hover:text-white transition-colors"
-                                            >
-                                                <ArrowTopRightOnSquareIcon className="h-3 w-3 mr-1.5" />
-                                                Paper
-                                            </a>
-                                        )}
+                                            {/* Code Link Button */}
+                                            {pub.code && (
+                                                <a
+                                                    href={pub.code}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                    className="inline-flex items-center px-3 py-1 rounded-md text-xs font-medium bg-neutral-100 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300 hover:bg-accent hover:text-white transition-colors"
+                                                >
+                                                    <CodeBracketIcon className="h-3 w-3 mr-1.5" />
+                                                    Code
+                                                </a>
+                                            )}
 
-                                        {/* Code Link Button */}
-                                        {pub.code && (
-                                            <a
-                                                href={pub.code}
-                                                target="_blank"
-                                                rel="noopener noreferrer"
-                                                className="inline-flex items-center px-3 py-1 rounded-md text-xs font-medium bg-neutral-100 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300 hover:bg-accent hover:text-white transition-colors"
-                                            >
-                                                <CodeBracketIcon className="h-3 w-3 mr-1.5" />
-                                                Code
-                                            </a>
-                                        )}
+                                            {/* Abstract Button */}
+                                            {pub.abstract && (
+                                                <button
+                                                    onClick={() => setExpandedAbstractId(expandedAbstractId === pub.id ? null : pub.id)}
+                                                    className={cn(
+                                                        "inline-flex items-center px-3 py-1 rounded-md text-xs font-medium transition-colors",
+                                                        expandedAbstractId === pub.id
+                                                            ? "bg-accent text-white"
+                                                            : "bg-neutral-100 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300 hover:bg-accent hover:text-white"
+                                                    )}
+                                                >
+                                                    <DocumentTextIcon className="h-3 w-3 mr-1.5" />
+                                                    Abstract
+                                                </button>
+                                            )}
 
-                                        {/* Abstract Button */}
-                                        {pub.abstract && (
-                                            <button
-                                                onClick={() => setExpandedAbstractId(expandedAbstractId === pub.id ? null : pub.id)}
-                                                className={cn(
-                                                    "inline-flex items-center px-3 py-1 rounded-md text-xs font-medium transition-colors",
-                                                    expandedAbstractId === pub.id
-                                                        ? "bg-accent text-white"
-                                                        : "bg-neutral-100 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300 hover:bg-accent hover:text-white"
-                                                )}
-                                            >
-                                                <DocumentTextIcon className="h-3 w-3 mr-1.5" />
-                                                Abstract
-                                            </button>
-                                        )}
+                                            {/* BibTeX Button */}
+                                            {pub.bibtex && (
+                                                <button
+                                                    onClick={() => setExpandedBibtexId(expandedBibtexId === pub.id ? null : pub.id)}
+                                                    className={cn(
+                                                        "inline-flex items-center px-3 py-1 rounded-md text-xs font-medium transition-colors",
+                                                        expandedBibtexId === pub.id
+                                                            ? "bg-accent text-white"
+                                                            : "bg-neutral-100 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300 hover:bg-accent hover:text-white"
+                                                    )}
+                                                >
+                                                    <BookOpenIcon className="h-3 w-3 mr-1.5" />
+                                                    BibTeX
+                                                </button>
+                                            )}
+                                        </div>
 
-                                        {/* BibTeX Button */}
-                                        {pub.bibtex && (
-                                            <button
-                                                onClick={() => setExpandedBibtexId(expandedBibtexId === pub.id ? null : pub.id)}
-                                                className={cn(
-                                                    "inline-flex items-center px-3 py-1 rounded-md text-xs font-medium transition-colors",
-                                                    expandedBibtexId === pub.id
-                                                        ? "bg-accent text-white"
-                                                        : "bg-neutral-100 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300 hover:bg-accent hover:text-white"
-                                                )}
-                                            >
-                                                <BookOpenIcon className="h-3 w-3 mr-1.5" />
-                                                BibTeX
-                                            </button>
-                                        )}
+                                        {/* Topic Badges */}
+                                        <TopicBadges topics={pub.topics} />
                                     </div>
 
                                     {/* Abstract/BibTeX Expansion */}
