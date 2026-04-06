@@ -18,11 +18,6 @@ export default function CardPage({ config, embedded = false }: { config: CardPag
     const [selectedStatus, setSelectedStatus] = useState<'all' | 'ongoing' | 'completed'>('all');
     const [showFilters, setShowFilters] = useState(false);
 
-    // 检查是否是thesis类别的页面（有thesis category的item）
-    const hasThesisCategory = useMemo(() => {
-        return (config.items as ExtendedCardItem[]).some(item => item.category === 'thesis');
-    }, [config.items]);
-
     // 判断item是否为ongoing状态
     const isOngoing = (item: ExtendedCardItem): boolean => {
         const date = item.date?.toLowerCase() || '';

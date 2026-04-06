@@ -4,6 +4,13 @@ description = "Courses I have taught or assisted with."
 
 [[items]]
 title = "Advanced Study Projects Quality & Usability"
+subtitle = "LLM for Structured Information Extraction of Research Papers"
+date = "Summer Semester 2026"
+content = "Test LLMs' ability in extracting structured information from NLP research papers and how it can facilitate researchers."
+tags = ["Graduate", "NLP"]
+
+[[items]]
+title = "Advanced Study Projects Quality & Usability"
 subtitle = "Explaining and Evaluating Bilingual Natural Language Inference Questions"
 date = "Winter Semester 2025/26"
 content = "Extend an existing dataset to German and enrich it with additional explanation scoring."

@@ -1,5 +1,9 @@
 
 ## 2025
+**2025-05-19:** 💫 Three first-authored papers in submission about (1) _multilingual explanation request parsing and custom input extraction in ConvXAI_; (2) _counterfactual validity evaluation for counterfactual data augmentation_; (3) _how does quantization affect model explainability and interpretability_.
+
+**2025-05-15:** The 4th first-authored paper titled _FitCF: A Framework for Automatic Feature Importance-guided Counterfactual Example Generation_ accepted at _ACL 2025 Findings_. See you in Vienna, Austria 🇦🇹! 🍻
+
 **2025-05-15:** 🚥 Thrilled to announce that I will be conducting a research stay in _September_ at the [CopeNLU](https://www.copenlu.com/) group, led by [Isabelle Augenstein](https://isabelleaugenstein.github.io/), funded by the [Danish Data Science Academy](https://ddsa.dk/)(DDSA).
 
 **2025-04-29:** I gave an invited talk at Efficient and Explainable NLP (E&E) Group, MLT Lab, DFKI about _FitCF paper_. 

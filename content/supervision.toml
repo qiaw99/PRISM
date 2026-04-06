@@ -3,7 +3,14 @@ title = "Supervision"
 
 # === Thesis Supervision ===
 [[items]]
-title = "Counterfactual Example Generation Enhancement via Alignment-as-Preference Optimization"
+title = "Enhancing Multilingual Counterfactual Generation through Alignment-as-Preference Optimization"
+subtitle = "Yilong Wang"
+date = "Ongoing"
+tags = ["M.Sc."]
+category = "thesis"
+
+[[items]]
+title = "Self-Align to Explain: Comparing Post-Training Methods for Counterfactual Generation"
 subtitle = "Fedor Splitt"
 date = "Ongoing"
 tags = ["B.Sc."]
@@ -21,6 +28,7 @@ title = "Towards Efficient Chain-of-Thought Reasoning with CodeLLMs"
 subtitle = "Jiaao Li"
 date = "WS2025/26"
 tags = ["M.Sc."]
+content="Now a PhD student at Universität Bielefeld"
 category = "thesis"
 
 [[items]]
