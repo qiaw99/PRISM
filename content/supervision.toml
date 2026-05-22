@@ -5,7 +5,7 @@ title = "Supervision"
 [[items]]
 title = "Enhancing Multilingual Counterfactual Generation through Alignment-as-Preference Optimization"
 subtitle = "Yilong Wang"
-date = "Ongoing"
+date = "SS2026"
 tags = ["M.Sc."]
 category = "thesis"
 
@@ -50,7 +50,7 @@ category = "thesis"
 [[items]]
 title = "Student Research Assistant"
 subtitle = "Fedor Splitt"
-date = "2025/02/15-ongoing"
+date = "2025/02/15-2026/06/30"
 content = "Intent recognition in conversational XAI systems and counterfactual data augmentation"
 tags = ["B.Sc.", "Ongoing"]
 category = "research-assistant"

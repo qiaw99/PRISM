@@ -181,7 +181,10 @@ export default function PublicationsList({ config, publications, embedded = fals
 
     // Filter publications
     const filteredPublications = useMemo(() => {
-        return publications.filter(pub => {
+        const currentYear = new Date().getFullYear();
+        const hasBooktitle = (pub: Publication) => !!(pub.journal || pub.conference);
+
+        const filtered = publications.filter(pub => {
             const matchesSearch =
                 pub.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
                 pub.authors.some(author => author.name.toLowerCase().includes(searchQuery.toLowerCase())) ||
@@ -194,6 +197,23 @@ export default function PublicationsList({ config, publications, embedded = fals
             const matchesAuthorPosition = selectedAuthorPosition === 'all' || isFirstAuthor(pub);
 
             return matchesSearch && matchesYear && matchesType && matchesTopic && matchesAuthorPosition;
+        });
+
+        // Sort: latest year with booktitle first, then latest year without booktitle
+        return filtered.sort((a, b) => {
+            const aIsLatest = a.year === currentYear;
+            const bIsLatest = b.year === currentYear;
+            const aHasBooktitle = hasBooktitle(a);
+            const bHasBooktitle = hasBooktitle(b);
+
+            // Priority: latest year with booktitle > latest year without booktitle > others
+            if (aIsLatest && aHasBooktitle && !(bIsLatest && bHasBooktitle)) return -1;
+            if (bIsLatest && bHasBooktitle && !(aIsLatest && aHasBooktitle)) return 1;
+            if (aIsLatest && !aHasBooktitle && !bIsLatest) return -1;
+            if (bIsLatest && !bHasBooktitle && !aIsLatest) return 1;
+
+            // For same priority group, sort by year descending
+            return b.year - a.year;
         });
     }, [publications, searchQuery, selectedYear, selectedType, selectedTopic, selectedAuthorPosition]);
 

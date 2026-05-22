@@ -10,7 +10,7 @@
 
 
 # Jobs 🧑‍💻
-2024.07 - ongoing: NLP Researcher @ Quality and Usability Lab, Technische Universität Berlin, Berlin, Germany; funded by [VERANDA](https://njctn.github.io/VERANDA/) project.
+2024.07 - 2026.06: NLP Researcher @ Quality and Usability Lab, Technische Universität Berlin, Berlin, Germany; funded by [VERANDA](https://njctn.github.io/VERANDA/) project.
 
 2024.07 - ongoing: Guest Researcher @ German Research Center for Artificial Intelligence (DFKI) - [SLT Group](https://www.dfki.de/en/web/research/research-departments/speech-and-language-technology/), Berlin, Germany.
 

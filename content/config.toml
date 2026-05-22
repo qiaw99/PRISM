@@ -74,11 +74,11 @@ href = "/services"
 #target = "cv"
 #href = "/cv"
 
-[[navigation]]
-target = "talk"
-href = "/talk"
-type = "page"
-title = "🎯Talk"
+#[[navigation]]
+#target = "talk"
+#href = "/talk"
+#type = "page"
+#title = "🎯Talk"
 
 [[navigation]]
 target = "old_news"
