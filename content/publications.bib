@@ -1,15 +1,20 @@
-@misc{sun2026faithmate,
+@misc{sun2026investigatinginterplaycontextualparametric,
     title = {Investigating the Interplay between Contextual and Parametric Chain-of-Thought Faithfulness},
     author = {Jingyi Sun* and Qianli Wang* and Pepa Atanasova and Nils Feldhus and Isabelle Augenstein},
     year = {2026},
+    eprint={2605.24960},
+    archivePrefix={arXiv},
+    primaryClass={cs.CL},
+    url={https://arxiv.org/abs/2605.24960},
     topics = {Faithfulness, Rationale},
     preview = {metafaith.png},
     description = {In submission. †Equal contribution.},
+    abstract = {Chain-of-Thought (CoT) faithfulness, i.e., whether CoTs genuinely reflect large language models' (LLM) underlying behavior, is typically evaluated under two disjoint paradigms: contextual faithfulness, measured by perturbing the input or CoT trace, and parametric faithfulness, assessed by intervening on a model's parametric knowledge. Yet prior work compares them only descriptively. We fill this gap by proposing FaithMate, a unified preference-alignment interface for optimizing models towards either faithfulness paradigm. It enables us to investigate the interplay between the two paradigms, examining whether and to what extent faithfulness gains generalize within and across paradigms. Across three models, two datasets, and six faithfulness metrics, we find that the two paradigms are positively coupled, yet asymmetric: optimizing towards parametric faithfulness yields consistent gains across both paradigms, whereas the contextual counterpart delivers more variable gains. Within the contextual paradigm, faithfulness gains on one metric do not consistently transfer to others, implying that existing contextual metrics capture disjoint facets of faithfulness and exposing inherent trade-offs. These findings imply that CoT faithfulness is not a monolithic objective and therefore requires multifaceted optimization and evaluation.},
 }
 
 @misc{feldhus2026judgecircuits,
-    title = {Judge Circuits: Mechanistic Origins of Format-Induced Inconsistency in LLM-as-a-Judge},
-    author = {Nils Feldhus and Tanja Bäumel and Elena Golimblevskaia and Qianli Wang and Van Bach Nguyen and Aaron Louis Eidt and Christopher Ebert and Selin Kahvecioglu and Wojciech Samek and Jing Yang and Vera Schmitt and Sebastian Möller and Simon Ostermann
+    title = {Judge Circuits},
+    author = {Nils Feldhus and Tanja Bäumel and Elena Golimblevskaia and Qianli Wang and Van Bach Nguyen and Aaron Louis Eidt and Selin Kahvecioglu and Christopher Ebert and Selin Kahvecioglu and Wojciech Samek and Jing Yang and Vera Schmitt and Sebastian Möller and Simon Ostermann
     },
     eprint={2605.16023},
     archivePrefix={arXiv},
@@ -19,11 +24,11 @@
     topics = {Interpretability},
     description = {In submission},
     preview = {judge.png},
-    abstract = {LLM-as-a-judge has become the dominant paradigm for grading model outputs at scale, yet the same model assigns systematically different scores when its output format changes (e.g., a 1-5 rating vs. a True/False label). Existing diagnoses of these format-induced inconsistencies stop at the input-output level. Using Position-aware Edge Attribution Patching (PEAP), we causally investigate the internal mechanism in Gemma-3, Qwen2.5, and Llama-3. We find that judgments across structured understanding and open-ended preference tasks share a sparse, generalized Latent Evaluator sub-graph in the mid-to-late multi-layer perceptrons (MLPs); zero-ablating it collapses judgment while preserving world knowledge in architecturally modular models. By structurally decoupling abstract judging from output formatting, we provide a mechanistic account of format-induced inconsistency on the open-weight models we study: a continuous judgment signal computed in the shared trunk is mapped through fragile, format-specific terminal branches, enabling format-independent preference to be isolated downstream of the requested output format. Our findings imply that benchmark-level reliability comparisons across formats are partially measuring formatter geometry rather than evaluation quality.},
+    abstract = {LLM-as-a-judge has become the dominant paradigm for grading model outputs at scale, yet the same model assigns systematically different scores when its output format changes (e.g., a 1--5 rating vs. a True/False label). Existing diagnoses of these format-induced inconsistencies stop at the input-output level. Using Position-aware Edge Attribution Patching (PEAP), we causally investigate the internal mechanism in Gemma-3, Qwen2.5, and Llama-3. We find that judgments across structured understanding and open-ended preference tasks share a sparse, generalized Latent Evaluator sub-graph in the mid-to-late multi-layer perceptrons (MLPs); zero-ablating it collapses judgment while preserving world knowledge in architecturally modular models. By structurally decoupling abstract judging from output formatting, we provide a mechanistic account of format-induced inconsistency on the open-weight models we study: a continuous judgment signal computed in the shared trunk is mapped through fragile, format-specific terminal branches, enabling format-independent preference to be isolated downstream of the requested output format. Our findings imply that benchmark-level reliability comparisons across formats are partially measuring formatter geometry rather than evaluation quality.},
 }
 
 @misc{wang2026enhancingmultilingualcounterfactualgeneration,
-    title = {Macro: Enhancing Multilingual Counterfactual Generation through Alignment-as-Preference Optimization},
+    title = {Macro: Enhancing Multilingual Counterfactual Explanations through Alignment-as-Preference Optimization},
     author = {Yilong Wang* and Qianli Wang* and Bohao Chu and Yihong Liu and Jing Yang and Simon Ostermann},
     year = {2026},
     topics = {Multilingual, Counterfactual},
@@ -63,6 +68,7 @@
     title = {Parallel Universes, Parallel Languages: A Comprehensive Study on LLM-based Multilingual Counterfactual Example Generation},
     author = {Qianli Wang and Van Bach Nguyen and Yihong Liu and Fedor Splitt and Nils Feldhus and Christin Seifert and Hinrich Schütze and Sebastian Möller and Vera Schmitt},
     year = {2026},
+    code = {https://github.com/qiaw99/multicfe},
     eprint = {2601.00263},
     selected = {true},
     archivePrefix = {arXiv},
@@ -94,6 +100,9 @@
     year = {2026},
     topics = {interpretability},
     description = {The extended version accepted at Computer Science Review},
+%    doi = {https://doi.org/10.1016/j.cosrev.2026.101011},
+%    url = {https://www.sciencedirect.com/science/article/pii/S157401372600119X},
+%    journal = {Computer Science Review},
     preview = {MI.png},
     booktitle = "ACL Findings",
     eprint={2601.14004},
@@ -105,7 +114,8 @@
 }
 
 @misc{yang2026orderevaluationcourtcritical,
-    title = {Order in the Evaluation Court: A Critical Analysis of NLG Evaluation Trends},
+    title = {What Are We Measuring in NLG? A Meta-Analysis of Evaluation Trends
+2020-2025},
     author = {Jing Yang and Nils Feldhus and Salar Mohtaj and Leonhard Hennig and Qianli Wang and Eleni Metheniti and Sherzod Hakimov and Charlott Jakob and Veronika Solopova and Konrad Rieck and David Schlangen and Sebastian Möller and Vera Schmitt},
     year = {2026},
     preview = {NLG.png},
@@ -115,7 +125,7 @@
     archivePrefix={arXiv},
     primaryClass={cs.CL},
     url={https://arxiv.org/abs/2601.07648},
-    abstract = {Despite advances in Natural Language Generation (NLG), evaluation remains challenging. Although various new metrics and LLM-as-a-judge (LaaJ) methods are proposed, human judgment persists as the gold standard. To systematically review how NLG evaluation has evolved, we employ an automatic information extraction scheme to gather key information from NLG papers, focusing on different evaluation methods (metrics, LaaJ and human evaluation). With extracted metadata from 14,171 papers across four major conferences (ACL, EMNLP, NAACL, and INLG) over the past six years, we reveal several critical findings: (1) Task Divergence: While Dialogue Generation demonstrates a rapid shift toward LaaJ (>40% in 2025), Machine Translation remains locked into n-gram metrics, and Question Answering exhibits a substantial decline in the proportion of studies conducting human evaluation. (2) Metric Inertia: Despite the development of semantic metrics, general-purpose metrics (e.g., BLEU, ROUGE) continue to be widely used across tasks without empirical justification, often lacking the discriminative power to distinguish between specific quality criteria. (3) Human-LaaJ Divergence: Our association analysis challenges the assumption that LLMs act as mere proxies for humans; LaaJ and human evaluations prioritize very different signals, and explicit validation is scarce (<8% of papers comparing the two), with only moderate to low correlation. Based on these observations, we derive practical recommendations to improve the rigor of future NLG evaluation.},
+    abstract = {As Natural Language Generation (NLG) dominates modern NLP, scalable evaluation remains a critical bottleneck. Consequently, LLM-as-a-judge (LaaJ) adoption has accelerated rapidly, appearing in more papers than human evaluation in 2025. This pivotal shift motivates a critical analysis of current evaluation practices. Overcoming the limits of rigid keyword filtering and manual review, we employ a multi-LLM information extraction pipeline to gather structured metadata from 14,171 papers across four major NLP conferences (2020-2025). Analyzing 3,334 filtered NLG papers, we identify three systemic challenges. (1) Metric inertia: despite the shift toward open-ended generation, legacy lexical metrics (BLEU, ROUGE) persist as primary indicators, typically used alongside rather than replaced by semantic alternatives. (2) Metric-criteria mapping problem: our paper-level co-occurrence data reveals that general-purpose automatic metrics are applied as broad proxies for quality, without specifying which dimension of text generation they are intended to evaluate. (3) Validation gap: LaaJ has grown rapidly without commensurate human validation (fewer than 8% of papers). Crucially, while LaaJ correlates with aggregate quality, alignment collapses on fine-grained criteria like fluency. To address these gaps, we distill our findings into a minimal Evaluation Checklist to guide metric selection, construct validity, and LaaJ deployment.},
 }
 
 @misc{chu2026etracer,

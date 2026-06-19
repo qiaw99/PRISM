@@ -328,14 +328,7 @@ export default function Profile({ author, social, features, researchInterests }:
             <div className="bg-neutral-100 dark:bg-neutral-800 rounded-lg p-4 mb-6 hover:shadow-lg transition-all duration-200 hover:scale-[1.02]">
                 <h3 className="font-semibold text-primary mb-3">🌍 Visitor Map</h3>
                 <div className="flex justify-center items-center">
-                    <a href="https://clustrmaps.com/site/1c8o4" title="ClustrMaps">
-                        {/* eslint-disable-next-line @next/next/no-img-element */}
-                        <img
-                            src="//www.clustrmaps.com/map_v2.png?d=b7PhTR__EdwTtMoKkMK-wWZ54PM0utFYGGWNg6uEd8Q&cl=ffffff"
-                            alt="Visitor Map"
-                            className="rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200"
-                        />
-                    </a>
+                    <a href='https://mapmyvisitors.com/web/1c5nc'  title='Visit tracker'><img src='https://mapmyvisitors.com/map.png?cl=080808&w=a&t=tt&d=9cnkZ8DpBZ7B38J4dwwhSkE27-798DrDyIW3POmVYB0&co=dce4ff&ct=808080'/></a>
                 </div>
             </div>
 

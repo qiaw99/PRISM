@@ -10,11 +10,16 @@
 
 
 # Jobs 🧑‍💻
-2024.07 - 2026.06: NLP Researcher @ Quality and Usability Lab, Technische Universität Berlin, Berlin, Germany; funded by [VERANDA](https://njctn.github.io/VERANDA/) project.
 
-2024.07 - ongoing: Guest Researcher @ German Research Center for Artificial Intelligence (DFKI) - [SLT Group](https://www.dfki.de/en/web/research/research-departments/speech-and-language-technology/), Berlin, Germany.
+2026.09 - 2027.03: Applied Scientist Intern @ [Amazon](https://www.amazon.de/), Berlin, Germany.
 
-2024.01 - 2024.05: Machine Learning Researcher @ Aptiv, Wuppertal, Germany.
+2026.06 - 2026.08: Applied Scientist Intern @ [Hithink RoyalFlush](https://www.10jqka.com.cn/), Hangzhou, China.
+
+2024.07 - 2026.06: NLP Researcher @ Technische Universität Berlin, Berlin, Germany; funded by [VERANDA](https://njctn.github.io/VERANDA/) project.
+
+[//]: # (2024.07 - ongoing: Guest Researcher @ German Research Center for Artificial Intelligence &#40;DFKI&#41; - [SLT Group]&#40;https://www.dfki.de/en/web/research/research-departments/speech-and-language-technology/&#41;, Berlin, Germany.)
+
+2024.01 - 2024.05: Machine Learning Researcher @ [Aptiv](https://www.aptiv.com/), Wuppertal, Germany.
 
 2023.01 - 2024.01: Research Assistant @ German Research Center for Artificial Intelligence (DFKI) - [SLT Group](https://www.dfki.de/en/web/research/research-departments/speech-and-language-technology/), Berlin, Germany.
 
