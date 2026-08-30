@@ -3,23 +3,24 @@ title = "Supervision"
 
 # === Thesis Supervision ===
 [[items]]
-title = "Enhancing Multilingual Counterfactual Generation through Alignment-as-Preference Optimization"
+title = "Macro: Enhancing Multilingual Counterfactual Explanations through Alignment-as-Preference Optimization"
 subtitle = "Yilong Wang"
 date = "SS2026"
 tags = ["M.Sc."]
 category = "thesis"
+content = "The paper has been accepted at **EMNLP 2026 Findings**."
 
 [[items]]
 title = "Self-Align to Explain: Comparing Post-Training Methods for Counterfactual Generation"
 subtitle = "Fedor Splitt"
-date = "Ongoing"
+date = "SS2026"
 tags = ["B.Sc."]
 category = "thesis"
 
 [[items]]
 title = "Why Self-Explanations should not be trusted? Analyzing Faithfulness Across Tasks, Models, and Languages"
 subtitle = "Nico Tananow"
-date = "Ongoing"
+date = "SS2026"
 tags = ["M.Sc."]
 category = "thesis"
 
@@ -42,7 +43,7 @@ category = "thesis"
 title = "AIGC: Automatic Iterative Generation for Counterfactuals"
 subtitle = "Yilong Wang"
 date = "WS2025/26"
-content = "A paper titled \"iFlip: Iterative Feedback-driven Counterfactual Example Refinement\", which builds upon the thesis, is submitted to ACL 2026."
+content = "A paper titled _\"iFlip: Iterative Feedback-driven Counterfactual Example Refinement\"_, which builds upon the thesis, has been accepted at **EMNLP 2026 Findings**."
 tags = ["B.Sc."]
 category = "thesis"
 

@@ -81,6 +81,12 @@ href = "/services"
 #title = "🎯Talk"
 
 [[navigation]]
+target = "misc"
+href = "/misc"
+type = "gallery"
+title = "📸 Misc"
+
+[[navigation]]
 target = "old_news"
 href = "/old_news"
 type = "page"

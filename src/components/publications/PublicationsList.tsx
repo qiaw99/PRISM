@@ -9,6 +9,7 @@ import {
     CalendarIcon,
     BookOpenIcon,
     ClipboardDocumentIcon,
+    CheckIcon,
     DocumentTextIcon,
     ArrowTopRightOnSquareIcon,
     NewspaperIcon,
@@ -122,15 +123,24 @@ export default function PublicationsList({ config, publications, embedded = fals
     const [expandedAbstractId, setExpandedAbstractId] = useState<string | null>(null);
     const [expandedAuthorsId, setExpandedAuthorsId] = useState<string | null>(null);
     const [previewImage, setPreviewImage] = useState<string | null>(null);
+    const [copiedId, setCopiedId] = useState<string | null>(null);
 
-    // 判断是否为第一作者(包括共同第一作者)
-    const isFirstAuthor = (pub: Publication): boolean => {
-        if (!pub.authors || pub.authors.length === 0) return false;
+    const copyBibtex = (id: string, bibtex: string) => {
+        navigator.clipboard.writeText(bibtex);
+        setCopiedId(id);
+        setTimeout(() => setCopiedId(null), 2000);
+    };
 
+    // 获取作者位置优先级: 0=纯一作, 1=共一, 2=非一作
+    const getAuthorPriority = (pub: Publication): number => {
+        if (!pub.authors || pub.authors.length === 0) return 2;
+
+        // 纯一作：排在第一位
         if (pub.authors[0].isHighlighted === true) {
-            return true;
+            return 0;
         }
 
+        // 共一：排在第二位但有 equal contribution
         if (pub.authors.length >= 2 && pub.authors[1].isHighlighted === true) {
             const description = pub.description?.toLowerCase() || '';
             const hasEqualContribution =
@@ -140,15 +150,16 @@ export default function PublicationsList({ config, publications, embedded = fals
                 description.includes('contributed equally');
 
             if (hasEqualContribution) {
-                return true;
-            }
-
-            if (pub.authors[0].isHighlighted) {
-                return true;
+                return 1;
             }
         }
 
-        return false;
+        return 2;
+    };
+
+    // 判断是否为第一作者(包括共同第一作者)
+    const isFirstAuthor = (pub: Publication): boolean => {
+        return getAuthorPriority(pub) < 2;
     };
 
     // Extract unique years and types for filters
@@ -167,6 +178,34 @@ export default function PublicationsList({ config, publications, embedded = fals
         const allTopics = publications.flatMap(p => p.topics || []);
         const uniqueTopics = Array.from(new Set(allTopics));
         return uniqueTopics.sort();
+    }, [publications]);
+
+    // Extract main venue from workshop format (e.g., "TrustNLP @ ACL 2026" -> "acl")
+    const getMainVenue = (venue: string): string => {
+        const lower = venue.toLowerCase();
+        // Check for workshop format: "XXX @ YYY" or "XXX @YYY"
+        const atMatch = lower.match(/@\s*(\w+)/);
+        if (atMatch) {
+            return atMatch[1]; // Return the main conference name
+        }
+        // Otherwise extract first word/acronym (e.g., "EMNLP 2024" -> "emnlp")
+        const firstWord = lower.match(/^[\w-]+/);
+        return firstWord ? firstWord[0] : lower;
+    };
+
+    // Build venue order map based on first appearance in bib file (using bibIndex)
+    const venueOrderMap = useMemo(() => {
+        const orderMap = new Map<string, number>();
+        // Sort by bibIndex to get original bib file order
+        const sortedByBibIndex = [...publications].sort((a, b) => (a.bibIndex ?? Infinity) - (b.bibIndex ?? Infinity));
+        sortedByBibIndex.forEach((pub) => {
+            const venue = pub.conference || pub.journal || '';
+            const mainVenue = getMainVenue(venue);
+            if (mainVenue && !orderMap.has(mainVenue)) {
+                orderMap.set(mainVenue, orderMap.size);
+            }
+        });
+        return orderMap;
     }, [publications]);
 
     // 统计第一作者论文数量
@@ -199,23 +238,40 @@ export default function PublicationsList({ config, publications, embedded = fals
             return matchesSearch && matchesYear && matchesType && matchesTopic && matchesAuthorPosition;
         });
 
-        // Sort: latest year with booktitle first, then latest year without booktitle
+        // Sort: by year descending, group by venue (bib file order), then first author priority
         return filtered.sort((a, b) => {
-            const aIsLatest = a.year === currentYear;
-            const bIsLatest = b.year === currentYear;
-            const aHasBooktitle = hasBooktitle(a);
-            const bHasBooktitle = hasBooktitle(b);
+            // First sort by year descending
+            if (b.year !== a.year) return b.year - a.year;
 
-            // Priority: latest year with booktitle > latest year without booktitle > others
-            if (aIsLatest && aHasBooktitle && !(bIsLatest && bHasBooktitle)) return -1;
-            if (bIsLatest && bHasBooktitle && !(aIsLatest && aHasBooktitle)) return 1;
-            if (aIsLatest && !aHasBooktitle && !bIsLatest) return -1;
-            if (bIsLatest && !bHasBooktitle && !aIsLatest) return 1;
+            // Then group by venue (conference or journal)
+            const aVenue = a.conference || a.journal || '';
+            const bVenue = b.conference || b.journal || '';
+            const aMainVenue = getMainVenue(aVenue);
+            const bMainVenue = getMainVenue(bVenue);
 
-            // For same priority group, sort by year descending
-            return b.year - a.year;
+            // Publications with venue come before those without
+            if (aMainVenue && !bMainVenue) return -1;
+            if (!aMainVenue && bMainVenue) return 1;
+
+            // Sort by venue order from bib file (first appearance order)
+            const aOrder = venueOrderMap.get(aMainVenue) ?? Infinity;
+            const bOrder = venueOrderMap.get(bMainVenue) ?? Infinity;
+            if (aOrder !== bOrder) return aOrder - bOrder;
+
+            // Within the same main venue, main conference comes before workshop
+            const aIsWorkshop = aVenue.includes('@');
+            const bIsWorkshop = bVenue.includes('@');
+            if (!aIsWorkshop && bIsWorkshop) return -1;
+            if (aIsWorkshop && !bIsWorkshop) return 1;
+
+            // Within the same venue, sort by author priority (0=纯一作 > 1=共一 > 2=非一作)
+            const aPriority = getAuthorPriority(a);
+            const bPriority = getAuthorPriority(b);
+            if (aPriority !== bPriority) return aPriority - bPriority;
+
+            return 0;
         });
-    }, [publications, searchQuery, selectedYear, selectedType, selectedTopic, selectedAuthorPosition]);
+    }, [publications, searchQuery, selectedYear, selectedType, selectedTopic, selectedAuthorPosition, venueOrderMap]);
 
     return (
         <motion.div
@@ -577,7 +633,10 @@ export default function PublicationsList({ config, publications, embedded = fals
                                             {/* Abstract Button */}
                                             {pub.abstract && (
                                                 <button
-                                                    onClick={() => setExpandedAbstractId(expandedAbstractId === pub.id ? null : pub.id)}
+                                                    onClick={() => {
+                                                        setExpandedBibtexId(null);
+                                                        setExpandedAbstractId(expandedAbstractId === pub.id ? null : pub.id);
+                                                    }}
                                                     className={cn(
                                                         "inline-flex items-center px-3 py-1 rounded-md text-xs font-medium transition-colors",
                                                         expandedAbstractId === pub.id
@@ -593,7 +652,10 @@ export default function PublicationsList({ config, publications, embedded = fals
                                             {/* BibTeX Button */}
                                             {pub.bibtex && (
                                                 <button
-                                                    onClick={() => setExpandedBibtexId(expandedBibtexId === pub.id ? null : pub.id)}
+                                                    onClick={() => {
+                                                        setExpandedAbstractId(null);
+                                                        setExpandedBibtexId(expandedBibtexId === pub.id ? null : pub.id);
+                                                    }}
                                                     className={cn(
                                                         "inline-flex items-center px-3 py-1 rounded-md text-xs font-medium transition-colors",
                                                         expandedBibtexId === pub.id
@@ -637,17 +699,29 @@ export default function PublicationsList({ config, publications, embedded = fals
                                                 className="overflow-hidden mt-4"
                                             >
                                                 <div className="relative bg-neutral-50 dark:bg-neutral-800 rounded-lg p-4 border border-neutral-200 dark:border-neutral-700">
-                                                    <pre className="text-xs text-neutral-600 dark:text-neutral-500 overflow-x-auto whitespace-pre-wrap font-mono">
+                                                    <pre className="text-xs text-neutral-600 dark:text-neutral-500 overflow-x-auto whitespace-pre-wrap font-mono pr-16">
                                                         {pub.bibtex}
                                                     </pre>
                                                     <button
-                                                        onClick={() => {
-                                                            navigator.clipboard.writeText(pub.bibtex || '');
-                                                        }}
-                                                        className="absolute top-2 right-2 p-1.5 rounded-md bg-white dark:bg-neutral-700 text-neutral-500 hover:text-accent shadow-sm border border-neutral-200 dark:border-neutral-600 transition-colors"
-                                                        title="Copy to clipboard"
+                                                        onClick={() => copyBibtex(pub.id, pub.bibtex || '')}
+                                                        className={cn(
+                                                            "absolute top-2 right-2 inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-md text-xs font-medium shadow-sm border transition-all duration-200",
+                                                            copiedId === pub.id
+                                                                ? "bg-green-500 text-white border-green-500"
+                                                                : "bg-white dark:bg-neutral-700 text-neutral-600 dark:text-neutral-300 border-neutral-200 dark:border-neutral-600 hover:bg-accent hover:text-white hover:border-accent"
+                                                        )}
                                                     >
-                                                        <ClipboardDocumentIcon className="h-4 w-4" />
+                                                        {copiedId === pub.id ? (
+                                                            <>
+                                                                <CheckIcon className="h-3.5 w-3.5" />
+                                                                Copied
+                                                            </>
+                                                        ) : (
+                                                            <>
+                                                                <ClipboardDocumentIcon className="h-3.5 w-3.5" />
+                                                                Copy
+                                                            </>
+                                                        )}
                                                     </button>
                                                 </div>
                                             </motion.div>

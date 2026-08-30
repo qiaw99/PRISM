@@ -46,6 +46,7 @@ export interface Publication {
   researchArea: ResearchArea;
   description?: string;
   topics?: TopicType[];
+  bibIndex?: number; // Original index in bib file
 }
 
 export type PublicationType =

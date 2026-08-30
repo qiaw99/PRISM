@@ -5,18 +5,20 @@ import { parseBibTeX } from '@/lib/bibtexParser';
 import PublicationsList from '@/components/publications/PublicationsList';
 import TextPage from '@/components/pages/TextPage';
 import CardPage from '@/components/pages/CardPage';
+import GalleryPage from '@/components/pages/GalleryPage';
 import {
     BasePageConfig,
     PublicationPageConfig,
     TextPageConfig,
-    CardPageConfig
+    CardPageConfig,
+    GalleryPageConfig
 } from '@/types/page';
 
 import { Metadata } from 'next';
 
 export function generateStaticParams() {
     const config = getConfig();
-    const validTypes = ['page', 'publication', 'card', 'text']; // 所有有效的页面类型
+    const validTypes = ['page', 'publication', 'card', 'text', 'gallery']; // 所有有效的页面类型
 
     return config.navigation
     .filter(nav => validTypes.includes(nav.type) && nav.target !== 'about')
@@ -57,6 +59,9 @@ export default async function DynamicPage({ params }: { params: Promise<{ slug: 
             )}
             {pageConfig.type === 'card' && (
                 <CardPage config={pageConfig as CardPageConfig} />
+            )}
+            {pageConfig.type === 'gallery' && (
+                <GalleryPage config={pageConfig as GalleryPageConfig} />
             )}
         </div>
     );

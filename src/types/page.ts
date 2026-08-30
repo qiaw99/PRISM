@@ -1,7 +1,20 @@
 export interface BasePageConfig {
-    type: 'about' | 'publication' | 'card' | 'text';
+    type: 'about' | 'publication' | 'card' | 'text' | 'gallery';
     title: string;
     description?: string;
+}
+
+export interface GalleryPhoto {
+    src: string;
+    caption?: string;
+    conference: string;
+    year?: string;
+}
+
+export interface GalleryPageConfig extends BasePageConfig {
+    type: 'gallery';
+    intro?: string;
+    photos: GalleryPhoto[];
 }
 
 export interface PublicationPageConfig extends BasePageConfig {

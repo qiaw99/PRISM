@@ -2,6 +2,15 @@ type = "card"
 title = "Services"
 description = "Professional services and community involvement."
 
+[[items]]
+title = "Reviewer"
+subtitle = "EACL 2027, ICLR 2027"
+date = "2027"
+
+[[items]]
+title = "Area Chair"
+subtitle = "EMNLP 2026 (Emergency)"
+date = "2026"
 
 [[items]]
 title = "Reviewer"

@@ -95,6 +95,9 @@ export function parseBibTeX(bibtexContent: string): Publication[] {
 
       // Store original BibTeX (excluding custom fields)
       bibtex: reconstructBibTeX(entry, ['selected', 'preview', 'description', 'keywords', 'code', 'topics']),
+
+      // Store original index in bib file for venue ordering
+      bibIndex: index,
     };
 
     // Clean up undefined fields

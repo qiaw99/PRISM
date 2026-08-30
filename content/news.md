@@ -1,16 +1,18 @@
-**2026-05-22**: Two more papers have been submitted on (1) LLM-as-a-Judge circuit discovery, (2) CoT faithfulness meta-evaluation under optimization.
+[//]: # (**2026-09-17**: Two new papers have been submitted on &#40;1&#41; an intervention test of CoT faithfulness; &#40;2&#41; locally sound yet globally insufficient trace in RAG reasoning.)
 
-**2026-05-21**: 💥 Happy to share that our paper "_Macro: Enhancing Multilingual Counterfactual Explanations through Alignment-as-Preference Optimization_" has been accepted by [MeLLM](https://mellm.org/) workshop @ ACL 2026 (_non-archival_).
+[//]: # (**2026-08-31**: _Limitations of Automated Simulatability: LLM Simulators Can Bypass Explanations_ led by Antonin is accepted at [BlackboxNLP @ EMNLP 2026]&#40;https://blackboxnlp.github.io/2026/&#41;!)
+
+**2026-08-21**: 💥 Thrilled to shared that **_6 papers_**, including 3 (co)-first authored ones, have been accepted at [EMNLP 2026](https://2026.emnlp.org/) about: (1) multilingual counterfactual explanation alignment (_Findings_); (2) the impact of quantization on self-explanation quality and faithfulness (_Findings_); (3) iterative feedback-driven counterfactual generation (_Findings_);(4) polarity-aware evidence grounding (_Main_); (5) a meta analysis of NLG evaluation (_Main_);  (6) tool-augmented drop-in ConvXAI layer (_Findings_).
+
+**2026-07-22**: One paper about the limitation of automated simulatability led by [Antonin Poché](https://antoninpoche.github.io/) is in submission.
+
+**2026-05-22**: Three new papers have been submitted on (1) LLM-as-a-Judge circuit discovery; (2) CoT faithfulness meta-evaluation under optimization; (3) multilingual self-explanation self-alignment.
 
 **2026-04-29**: Our paper about _quantization's effect on factual knowledge recall_ is finally accepted (Oral) at [TrustNLP](https://trustnlpworkshop.github.io/) workshop co-located at ACL 2026!
 
-**2026-04-20**: One paper led by my thesis student, Yilong, on _counterfactual self-explanation enhancement via alignment-as-preference optimization_ is currently under submission.
 
 **2026-04-07**: 🌟I am thrilled to shared that _**two**_ papers are accepted at _ACL 2026_ about (1) multilingual counterfactual evaluation (_Main_); (2) actionable mechanistic interpretability survey (_Findings_)! See you in San Diego 🇺🇸
 
-**2026-03-17**: 🤖 One co-authored paper in collaboration with Uni Marburg is in submission. We propose SimXAI, a lightweight LLM-centric conversational layer for ConvXAI systems, which enables better interaction quality and human understanding.
-
-**2026-01-06**: Two first-authored and three co-authored papers in submission about (1) _how quantization affects self-explanations_❓collaborated with [Pepa Atanasova](https://apepa.github.io/); (2) _feedback-driven iterative counterfactual refinement_; (3) _NLG evaluation trend survey_ led by [Jing Yang](https://jingyng.github.io/); (4) _claim-level grounding traceable generation_ led by [Bohao Chu](https://www.chubohao.com/); (5) _mechanistic interpretability application survey_ led by [Hengyuan Zhang](https://rattlesnakey.github.io/).
 
 
 [News Archive](old_news/)

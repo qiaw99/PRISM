@@ -1,8 +1,9 @@
  # Education Background 👨‍🎓
 
-2024.07-ongoing: Computer Science, Ph.D., Technische Universität Berlin. Supervised by Prof. Dr. Sebastian Möller.
+2024.07-ongoing: Computer Science, Ph.D., Technische Universität Berlin. Supervised by [Prof. Dr. Sebastian Möller](https://www.tu.berlin/en/qu/about-us/management): _Generation, Evaluation, and Application of
+Natural Language Counterfactual Examples_.
 
-2025.09: Visiting PhD Student, University of Copenhagen. Supervised by Prof. Dr. Isabelle Augenstein.
+2025.09: Visiting PhD Student, University of Copenhagen. Supervised by [Prof. Dr. Isabelle Augenstein](https://isabelleaugenstein.github.io/).
 
 2021.10-2023.10: Computer Science, M.Sc., Technische Universität Berlin. Supervised by [Dr.-Ing. Nils Feldhus](https://nfelnlp.github.io/) and [Dr.-Ing. Leonhard Hennig](https://www.dfki.de/web/ueber-uns/mitarbeiter/person/lehe02): _A Singular LLM is all you need for dialogue-based explanation regarding NLP tasks_.
 

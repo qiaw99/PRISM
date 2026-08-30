@@ -1,0 +1,76 @@
+type = "gallery"
+title = "Misc"
+description = "Around the world 🛬"
+
+intro = """
+My passion for traveling motivates me to publish papers and attend conferences 😄. Below is a collection of photos from academic conferences I have attended during my PhD journey.
+"""
+
+# 2024
+[[photos]]
+src = "/conference/emnlp2024_1.jpg"
+conference = "EMNLP 2024 Miami, USA"
+year = "2024"
+caption = ""
+
+[[photos]]
+src = "/conference/emnlp2024_2.jpg"
+conference = "EMNLP 2024 Miami, USA"
+year = "2024"
+caption = ""
+
+# 2025
+[[photos]]
+src = "/conference/coling2025_1.jpg"
+conference = "COLING 2025 Abu Dhabi, UAE"
+year = "2025"
+caption = ""
+
+[[photos]]
+src = "/conference/coling2025_2.jpg"
+conference = "COLING 2025 Abu Dhabi, UAE"
+year = "2025"
+caption = ""
+
+[[photos]]
+src = "/conference/emnlp2025_1.jpg"
+conference = "EMNLP 2025 Suzhou, China"
+year = "2025"
+caption = ""
+
+[[photos]]
+src = "/conference/emnlp2025_2.jpg"
+conference = "EMNLP 2025 Suzhou, China"
+year = "2025"
+caption = ""
+
+[[photos]]
+src = "/conference/acl2025_1.jpg"
+conference = "ACL 2025 Vienna, Austria"
+year = "2025"
+caption = ""
+
+[[photos]]
+src = "/conference/acl2025_2.jpg"
+conference = "ACL 2025 Vienna, Austria"
+year = "2025"
+caption = ""
+
+[[photos]]
+src = "/conference/inlg.jpg"
+conference = "INLG 2025 Hanoi, Vietnam"
+year = "2025"
+caption = ""
+
+# 2026
+[[photos]]
+src = "/conference/acl2026_1.jpg"
+conference = "ACL 2026 San Diego, USA"
+year = "2026"
+caption = ""
+
+[[photos]]
+src = "/conference/acl2026_2.jpg"
+conference = "ACL 2026 San Diego, USA"
+year = "2026"
+caption = ""
