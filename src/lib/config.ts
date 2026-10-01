@@ -26,6 +26,12 @@ export interface SiteConfig {
         linkedin?: string;
         [key: string]: string | string[] | undefined;
     };
+    scholar?: {
+        citations: number;
+        h_index: number;
+        i10_index: number;
+        profile_url?: string;
+    };
     features: {
         enable_likes: boolean;
         enable_one_page_mode?: boolean;

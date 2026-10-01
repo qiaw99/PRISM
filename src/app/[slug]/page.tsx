@@ -6,19 +6,21 @@ import PublicationsList from '@/components/publications/PublicationsList';
 import TextPage from '@/components/pages/TextPage';
 import CardPage from '@/components/pages/CardPage';
 import GalleryPage from '@/components/pages/GalleryPage';
+import ServicesPage from '@/components/pages/ServicesPage';
 import {
     BasePageConfig,
     PublicationPageConfig,
     TextPageConfig,
     CardPageConfig,
-    GalleryPageConfig
+    GalleryPageConfig,
+    ServicesPageConfig
 } from '@/types/page';
 
 import { Metadata } from 'next';
 
 export function generateStaticParams() {
     const config = getConfig();
-    const validTypes = ['page', 'publication', 'card', 'text', 'gallery']; // 所有有效的页面类型
+    const validTypes = ['page', 'publication', 'card', 'text', 'gallery', 'services']; // 所有有效的页面类型
 
     return config.navigation
     .filter(nav => validTypes.includes(nav.type) && nav.target !== 'about')
@@ -63,14 +65,18 @@ export default async function DynamicPage({ params }: { params: Promise<{ slug: 
             {pageConfig.type === 'gallery' && (
                 <GalleryPage config={pageConfig as GalleryPageConfig} />
             )}
+            {pageConfig.type === 'services' && (
+                <ServicesPage config={pageConfig as ServicesPageConfig} />
+            )}
         </div>
     );
 }
 
 function PublicationPage({ config }: { config: PublicationPageConfig }) {
+    const siteConfig = getConfig();
     const bibtex = getBibtexContent(config.source);
     const publications = parseBibTeX(bibtex);
-    return <PublicationsList config={config} publications={publications} />;
+    return <PublicationsList config={config} publications={publications} scholar={siteConfig.scholar} />;
 }
 
 function TextPageWrapper({ config }: { config: TextPageConfig }) {

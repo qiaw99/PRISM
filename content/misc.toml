@@ -6,6 +6,76 @@ intro = """
 My passion for traveling motivates me to publish papers and attend conferences 😄. Below is a collection of photos from academic conferences I have attended during my PhD journey.
 """
 
+# Home city for travel map
+[homeCity]
+name = "Berlin"
+lat = 52.5200
+lng = 13.4050
+
+# Travel destinations
+[[destinations]]
+name = "EMNLP 2024"
+city = "Miami"
+country = "USA"
+lat = 25.7617
+lng = -80.1918
+year = "2024"
+conference = "EMNLP 2024"
+
+[[destinations]]
+name = "COLING 2025"
+city = "Abu Dhabi"
+country = "UAE"
+lat = 24.4539
+lng = 54.3773
+year = "2025"
+conference = "COLING 2025"
+
+[[destinations]]
+name = "EMNLP 2025"
+city = "Suzhou"
+country = "China"
+lat = 31.2990
+lng = 120.5853
+year = "2025"
+conference = "EMNLP 2025"
+
+[[destinations]]
+name = "ACL 2025"
+city = "Vienna"
+country = "Austria"
+lat = 48.2082
+lng = 16.3738
+year = "2025"
+conference = "ACL 2025"
+
+[[destinations]]
+name = "INLG 2025"
+city = "Hanoi"
+country = "Vietnam"
+lat = 21.0285
+lng = 105.8542
+year = "2025"
+conference = "INLG 2025"
+
+[[destinations]]
+name = "ACL 2026"
+city = "San Diego"
+country = "USA"
+lat = 32.7157
+lng = -117.1611
+year = "2026"
+conference = "ACL 2026"
+
+[[destinations]]
+name = "Budapest"
+city = "Budapest"
+country = "Hungary"
+lat = 47.4979
+lng = 19.0402
+year = "2026"
+conference = "EMNLP 2026"
+
 # 2024
 [[photos]]
 src = "/conference/emnlp2024_1.jpg"
@@ -57,7 +127,13 @@ year = "2025"
 caption = ""
 
 [[photos]]
-src = "/conference/inlg.jpg"
+src = "/conference/inlg_1.jpg"
+conference = "INLG 2025 Hanoi, Vietnam"
+year = "2025"
+caption = ""
+
+[[photos]]
+src = "/conference/inlg_2.jpg"
 conference = "INLG 2025 Hanoi, Vietnam"
 year = "2025"
 caption = ""
@@ -74,3 +150,15 @@ src = "/conference/acl2026_2.jpg"
 conference = "ACL 2026 San Diego, USA"
 year = "2026"
 caption = ""
+
+[[photos]]
+src = "/conference/placeholder.svg"
+conference = "EMNLP 2026 Budapest, Hungary"
+year = "2026"
+caption = "Coming soon..."
+
+[[photos]]
+src = "/conference/placeholder.svg"
+conference = "EMNLP 2026 Budapest, Hungary"
+year = "2026"
+caption = "Coming soon..."

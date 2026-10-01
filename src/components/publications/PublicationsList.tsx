@@ -1,12 +1,10 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
 import {
     MagnifyingGlassIcon,
-    FunnelIcon,
-    CalendarIcon,
     BookOpenIcon,
     ClipboardDocumentIcon,
     CheckIcon,
@@ -18,17 +16,25 @@ import {
     CpuChipIcon,
     CodeBracketIcon,
     UserIcon,
-    XMarkIcon,
-    TagIcon
+    XMarkIcon
 } from '@heroicons/react/24/outline';
 import { Publication } from '@/types/publication';
 import { PublicationPageConfig } from '@/types/page';
 import { cn } from '@/lib/utils';
+import PublicationsOverview from './PublicationsOverview';
+
+interface ScholarStats {
+    citations: number;
+    h_index: number;
+    i10_index: number;
+    profile_url?: string;
+}
 
 interface PublicationsListProps {
     config: PublicationPageConfig;
     publications: Publication[];
     embedded?: boolean;
+    scholar?: ScholarStats;
 }
 
 // --- NEW COMPONENT: PublicationIcon ---
@@ -81,6 +87,7 @@ const topicConfig: Record<string, { label: string; color: string }> = {
     'faithfulness': { label: 'Faithfulness', color: 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' },
     'interpretability': { label: 'Interpretability', color: 'bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-400' },
     'multilingual': { label: 'Multilingual', color: 'bg-pink-100 text-pink-700 dark:bg-pink-900/30 dark:text-pink-400' },
+    'rag': { label: 'RAG', color: 'bg-cyan-100 text-cyan-700 dark:bg-cyan-900/30 dark:text-cyan-400' },
     'rationale': { label: 'Rationale', color: 'bg-teal-100 text-teal-700 dark:bg-teal-900/30 dark:text-teal-400' },
     'misc': { label: 'Misc', color: 'bg-gray-100 text-gray-700 dark:bg-gray-900/30 dark:text-gray-400' },
 };
@@ -112,18 +119,42 @@ const TopicBadges = ({ topics, className }: { topics?: string[]; className?: str
     );
 };
 
-export default function PublicationsList({ config, publications, embedded = false }: PublicationsListProps) {
+export default function PublicationsList({ config, publications, embedded = false, scholar }: PublicationsListProps) {
     const [searchQuery, setSearchQuery] = useState('');
     const [selectedYear, setSelectedYear] = useState<number | 'all'>('all');
-    const [selectedType, setSelectedType] = useState<string | 'all'>('all');
+    const [selectedType] = useState<string | 'all'>('all');
     const [selectedTopic, setSelectedTopic] = useState<string | 'all'>('all');
-    const [selectedAuthorPosition, setSelectedAuthorPosition] = useState<'all' | 'first'>('all');
-    const [showFilters, setShowFilters] = useState(false);
+    const [selectedVenue, setSelectedVenue] = useState<string | null>(null);
+    const [selectedCard, setSelectedCard] = useState<'firstAuthor' | 'conference' | 'workshop' | 'inSubmission' | null>(null);
     const [expandedBibtexId, setExpandedBibtexId] = useState<string | null>(null);
     const [expandedAbstractId, setExpandedAbstractId] = useState<string | null>(null);
     const [expandedAuthorsId, setExpandedAuthorsId] = useState<string | null>(null);
     const [previewImage, setPreviewImage] = useState<string | null>(null);
     const [copiedId, setCopiedId] = useState<string | null>(null);
+
+    const handleVenueFilter = (venue: string | null) => {
+        setSelectedVenue(venue);
+    };
+
+    const handleYearFilter = (year: number | null) => {
+        setSelectedYear(year ?? 'all');
+    };
+
+    const handleTopicFilter = (topic: string | null) => {
+        setSelectedTopic(topic ?? 'all');
+    };
+
+    const handleCardFilter = (card: 'firstAuthor' | 'conference' | 'workshop' | 'inSubmission' | null) => {
+        setSelectedCard(card);
+    };
+
+    const handleResetAll = () => {
+        setSearchQuery('');
+        setSelectedYear('all');
+        setSelectedTopic('all');
+        setSelectedVenue(null);
+        setSelectedCard(null);
+    };
 
     const copyBibtex = (id: string, bibtex: string) => {
         navigator.clipboard.writeText(bibtex);
@@ -158,27 +189,9 @@ export default function PublicationsList({ config, publications, embedded = fals
     };
 
     // 判断是否为第一作者(包括共同第一作者)
-    const isFirstAuthor = (pub: Publication): boolean => {
+    const isFirstAuthor = useCallback((pub: Publication): boolean => {
         return getAuthorPriority(pub) < 2;
-    };
-
-    // Extract unique years and types for filters
-    const years = useMemo(() => {
-        const uniqueYears = Array.from(new Set(publications.map(p => p.year)));
-        return uniqueYears.sort((a, b) => b - a);
-    }, [publications]);
-
-    const types = useMemo(() => {
-        const uniqueTypes = Array.from(new Set(publications.map(p => p.type)));
-        return uniqueTypes.sort();
-    }, [publications]);
-
-    // Extract unique topics for filter
-    const topics = useMemo(() => {
-        const allTopics = publications.flatMap(p => p.topics || []);
-        const uniqueTopics = Array.from(new Set(allTopics));
-        return uniqueTopics.sort();
-    }, [publications]);
+    }, []);
 
     // Extract main venue from workshop format (e.g., "TrustNLP @ ACL 2026" -> "acl")
     const getMainVenue = (venue: string): string => {
@@ -208,21 +221,8 @@ export default function PublicationsList({ config, publications, embedded = fals
         return orderMap;
     }, [publications]);
 
-    // 统计第一作者论文数量
-    const firstAuthorCount = useMemo(() => {
-        return publications.filter(pub => {
-            const yearMatch = selectedYear === 'all' || pub.year === selectedYear;
-            const typeMatch = selectedType === 'all' || pub.type === selectedType;
-            const topicMatch = selectedTopic === 'all' || pub.topics?.includes(selectedTopic as never);
-            return yearMatch && typeMatch && topicMatch && isFirstAuthor(pub);
-        }).length;
-    }, [publications, selectedYear, selectedType, selectedTopic]);
-
     // Filter publications
     const filteredPublications = useMemo(() => {
-        const currentYear = new Date().getFullYear();
-        const hasBooktitle = (pub: Publication) => !!(pub.journal || pub.conference);
-
         const filtered = publications.filter(pub => {
             const matchesSearch =
                 pub.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -233,9 +233,42 @@ export default function PublicationsList({ config, publications, embedded = fals
             const matchesYear = selectedYear === 'all' || pub.year === selectedYear;
             const matchesType = selectedType === 'all' || pub.type === selectedType;
             const matchesTopic = selectedTopic === 'all' || pub.topics?.includes(selectedTopic as never);
-            const matchesAuthorPosition = selectedAuthorPosition === 'all' || isFirstAuthor(pub);
 
-            return matchesSearch && matchesYear && matchesType && matchesTopic && matchesAuthorPosition;
+            const isWorkshopPaper = (p: Publication): boolean => {
+                const venue = (p.conference || p.journal || '').toUpperCase();
+                return venue.includes('@') || venue.includes('WORKSHOP');
+            };
+
+            const isInSubmission = (p: Publication): boolean => {
+                const desc = p.description?.toLowerCase() || '';
+                return desc.includes('in submission') || desc.includes('under review');
+            };
+
+            const matchesCard = !selectedCard || (() => {
+                switch (selectedCard) {
+                    case 'firstAuthor': return isFirstAuthor(pub);
+                    case 'conference': return pub.type === 'conference' && !isWorkshopPaper(pub);
+                    case 'workshop': return isWorkshopPaper(pub);
+                    case 'inSubmission': return isInSubmission(pub);
+                    default: return true;
+                }
+            })();
+
+            const matchesVenue = !selectedVenue || (() => {
+                const venue = (pub.conference || pub.journal || '').toUpperCase();
+                const isWorkshop = venue.includes('@') || venue.includes('WORKSHOP');
+                if (selectedVenue === 'Workshop') {
+                    return isWorkshop;
+                }
+                // Workshop papers should not match main conference names
+                if (isWorkshop) {
+                    return false;
+                }
+                const regex = new RegExp(`\\b${selectedVenue.toUpperCase()}\\b`);
+                return regex.test(venue);
+            })();
+
+            return matchesSearch && matchesYear && matchesType && matchesTopic && matchesCard && matchesVenue;
         });
 
         // Sort: by year descending, group by venue (bib file order), then first author priority
@@ -271,7 +304,7 @@ export default function PublicationsList({ config, publications, embedded = fals
 
             return 0;
         });
-    }, [publications, searchQuery, selectedYear, selectedType, selectedTopic, selectedAuthorPosition, venueOrderMap]);
+    }, [publications, searchQuery, selectedYear, selectedType, selectedTopic, selectedCard, selectedVenue, venueOrderMap, isFirstAuthor]);
 
     return (
         <motion.div
@@ -290,185 +323,97 @@ export default function PublicationsList({ config, publications, embedded = fals
                 )}
             </div>
 
-            {/* Search and Filter Controls */}
-            <div className="mb-8 space-y-4">
-                <div className="flex flex-col sm:flex-row gap-4">
-                    <div className="relative flex-grow">
-                        <MagnifyingGlassIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-neutral-400" />
-                        <input
-                            type="text"
-                            placeholder="Search publications..."
-                            value={searchQuery}
-                            onChange={(e) => setSearchQuery(e.target.value)}
-                            className="w-full pl-10 pr-4 py-2 rounded-lg border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 focus:ring-2 focus:ring-accent focus:border-transparent transition-all duration-200"
-                        />
-                    </div>
-                    <button
-                        onClick={() => setShowFilters(!showFilters)}
-                        className={cn(
-                            "flex items-center justify-center px-4 py-2 rounded-lg border transition-all duration-200",
-                            showFilters
-                                ? "bg-accent text-white border-accent"
-                                : "bg-white dark:bg-neutral-900 border-neutral-200 dark:border-neutral-800 text-neutral-600 hover:border-accent hover:text-accent"
-                        )}
-                    >
-                        <FunnelIcon className="h-5 w-5 mr-2" />
-                        Filters
-                    </button>
+            {/* Publications Overview */}
+            {!embedded && (
+                <PublicationsOverview
+                    publications={publications}
+                    scholar={scholar}
+                    onVenueFilter={handleVenueFilter}
+                    onYearFilter={handleYearFilter}
+                    onTopicFilter={handleTopicFilter}
+                    onCardFilter={handleCardFilter}
+                    onResetAll={handleResetAll}
+                    selectedYear={selectedYear}
+                    selectedTopic={selectedTopic}
+                    selectedVenue={selectedVenue}
+                    selectedCard={selectedCard}
+                />
+            )}
+
+            {/* Search */}
+            <div className="mb-6">
+                <div className="relative">
+                    <MagnifyingGlassIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-neutral-400" />
+                    <input
+                        type="text"
+                        placeholder="Search publications..."
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        className="w-full pl-10 pr-4 py-2 rounded-lg border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 focus:ring-2 focus:ring-accent focus:border-transparent transition-all duration-200"
+                    />
                 </div>
-
-                <AnimatePresence>
-                    {showFilters && (
-                        <motion.div
-                            initial={{ opacity: 0, height: 0 }}
-                            animate={{ opacity: 1, height: 'auto' }}
-                            exit={{ opacity: 0, height: 0 }}
-                            className="overflow-hidden"
-                        >
-                            <div className="p-4 bg-neutral-50 dark:bg-neutral-800/50 rounded-lg border border-neutral-200 dark:border-neutral-800 flex flex-wrap gap-6">
-                                {/* Year Filter */}
-                                <div className="space-y-2">
-                                    <label className="text-sm font-medium text-neutral-700 dark:text-neutral-300 flex items-center">
-                                        <CalendarIcon className="h-4 w-4 mr-1" /> Year
-                                    </label>
-                                    <div className="flex flex-wrap gap-2">
-                                        <button
-                                            onClick={() => setSelectedYear('all')}
-                                            className={cn(
-                                                "px-3 py-1 text-xs rounded-full transition-colors",
-                                                selectedYear === 'all'
-                                                    ? "bg-accent text-white"
-                                                    : "bg-white dark:bg-neutral-800 text-neutral-600 hover:bg-neutral-100 dark:hover:bg-neutral-700"
-                                            )}
-                                        >
-                                            All
-                                        </button>
-                                        {years.map(year => (
-                                            <button
-                                                key={year}
-                                                onClick={() => setSelectedYear(year)}
-                                                className={cn(
-                                                    "px-3 py-1 text-xs rounded-full transition-colors",
-                                                    selectedYear === year
-                                                        ? "bg-accent text-white"
-                                                        : "bg-white dark:bg-neutral-800 text-neutral-600 hover:bg-neutral-100 dark:hover:bg-neutral-700"
-                                                )}
-                                            >
-                                                {year}
-                                            </button>
-                                        ))}
-                                    </div>
-                                </div>
-
-                                {/* Type Filter */}
-                                <div className="space-y-2">
-                                    <label className="text-sm font-medium text-neutral-700 dark:text-neutral-300 flex items-center">
-                                        <BookOpenIcon className="h-4 w-4 mr-1" /> Type
-                                    </label>
-                                    <div className="flex flex-wrap gap-2">
-                                        <button
-                                            onClick={() => setSelectedType('all')}
-                                            className={cn(
-                                                "px-3 py-1 text-xs rounded-full transition-colors",
-                                                selectedType === 'all'
-                                                    ? "bg-accent text-white"
-                                                    : "bg-white dark:bg-neutral-800 text-neutral-600 hover:bg-neutral-100 dark:hover:bg-neutral-700"
-                                            )}
-                                        >
-                                            All
-                                        </button>
-                                        {types.map(type => (
-                                            <button
-                                                key={type}
-                                                onClick={() => setSelectedType(type)}
-                                                className={cn(
-                                                    "px-3 py-1 text-xs rounded-full capitalize transition-colors",
-                                                    selectedType === type
-                                                        ? "bg-accent text-white"
-                                                        : "bg-white dark:bg-neutral-800 text-neutral-600 hover:bg-neutral-100 dark:hover:bg-neutral-700"
-                                                )}
-                                            >
-                                                {type.replace('-', ' ')}
-                                            </button>
-                                        ))}
-                                    </div>
-                                </div>
-
-                                {/* Topic Filter */}
-                                <div className="space-y-2">
-                                    <label className="text-sm font-medium text-neutral-700 dark:text-neutral-300 flex items-center">
-                                        <TagIcon className="h-4 w-4 mr-1" /> Topic
-                                    </label>
-                                    <div className="flex flex-wrap gap-2">
-                                        <button
-                                            onClick={() => setSelectedTopic('all')}
-                                            className={cn(
-                                                "px-3 py-1 text-xs rounded-full transition-colors",
-                                                selectedTopic === 'all'
-                                                    ? "bg-accent text-white"
-                                                    : "bg-white dark:bg-neutral-800 text-neutral-600 hover:bg-neutral-100 dark:hover:bg-neutral-700"
-                                            )}
-                                        >
-                                            All
-                                        </button>
-                                        {topics.map(topic => (
-                                            <button
-                                                key={topic}
-                                                onClick={() => setSelectedTopic(topic)}
-                                                className={cn(
-                                                    "px-3 py-1 text-xs rounded-full transition-colors",
-                                                    selectedTopic === topic
-                                                        ? topicConfig[topic]?.color || "bg-accent text-white"
-                                                        : "bg-white dark:bg-neutral-800 text-neutral-600 hover:bg-neutral-100 dark:hover:bg-neutral-700"
-                                                )}
-                                            >
-                                                {topicConfig[topic]?.label || topic}
-                                            </button>
-                                        ))}
-                                    </div>
-                                </div>
-
-                                {/* Author Position Filter */}
-                                <div className="space-y-2">
-                                    <label className="text-sm font-medium text-neutral-700 dark:text-neutral-300 flex items-center">
-                                        <UserIcon className="h-4 w-4 mr-1" /> Author Position
-                                    </label>
-                                    <div className="flex flex-wrap gap-2">
-                                        <button
-                                            onClick={() => setSelectedAuthorPosition('all')}
-                                            className={cn(
-                                                "px-3 py-1 text-xs rounded-full transition-colors",
-                                                selectedAuthorPosition === 'all'
-                                                    ? "bg-accent text-white"
-                                                    : "bg-white dark:bg-neutral-800 text-neutral-600 hover:bg-neutral-100 dark:hover:bg-neutral-700"
-                                            )}
-                                        >
-                                            All
-                                        </button>
-                                        <button
-                                            onClick={() => setSelectedAuthorPosition('first')}
-                                            className={cn(
-                                                "px-3 py-1 text-xs rounded-full transition-colors",
-                                                selectedAuthorPosition === 'first'
-                                                    ? "bg-accent text-white"
-                                                    : "bg-white dark:bg-neutral-800 text-neutral-600 hover:bg-neutral-100 dark:hover:bg-neutral-700"
-                                            )}
-                                        >
-                                            First Author ({firstAuthorCount})
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </motion.div>
-                    )}
-                </AnimatePresence>
             </div>
 
             {/* Results Count */}
-            <div className="mb-4 text-sm text-neutral-600 dark:text-neutral-400">
-                Showing <span className="font-semibold text-accent">{filteredPublications.length}</span> of{' '}
-                <span className="font-semibold">{publications.length}</span> publications
-                {selectedAuthorPosition === 'first' && ' (First author only)'}
+            <div id="publications-list" className="mb-4 text-sm text-neutral-600 dark:text-neutral-400 flex items-center flex-wrap gap-2">
+                <span>
+                    Showing <span className="font-semibold text-accent">{filteredPublications.length}</span> of{' '}
+                    <span className="font-semibold">{publications.length}</span> publications
+                </span>
+                {selectedCard && (
+                    <span className={`inline-flex items-center gap-1 px-3 py-1 rounded-full ${
+                        selectedCard === 'firstAuthor' ? 'bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400' :
+                        selectedCard === 'conference' ? 'bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-400' :
+                        selectedCard === 'workshop' ? 'bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400' :
+                        'bg-rose-100 dark:bg-rose-900/30 text-rose-700 dark:text-rose-400'
+                    }`}>
+                        {selectedCard === 'firstAuthor' ? 'First Author' :
+                         selectedCard === 'conference' ? 'Conferences' :
+                         selectedCard === 'workshop' ? 'Workshops' : 'In Submission'}
+                        <button onClick={() => setSelectedCard(null)} className="ml-1 hover:opacity-70">
+                            <XMarkIcon className="w-4 h-4" />
+                        </button>
+                    </span>
+                )}
+                {selectedYear !== 'all' && (
+                    <span className="inline-flex items-center gap-1 px-3 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 rounded-full">
+                        Year: {selectedYear}
+                        <button onClick={() => setSelectedYear('all')} className="ml-1 hover:opacity-70">
+                            <XMarkIcon className="w-4 h-4" />
+                        </button>
+                    </span>
+                )}
+                {selectedTopic !== 'all' && (
+                    <span className={`inline-flex items-center gap-1 px-3 py-1 rounded-full ${topicConfig[selectedTopic]?.color || 'bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400'}`}>
+                        Topic: {topicConfig[selectedTopic]?.label || selectedTopic}
+                        <button onClick={() => setSelectedTopic('all')} className="ml-1 hover:opacity-70">
+                            <XMarkIcon className="w-4 h-4" />
+                        </button>
+                    </span>
+                )}
+                {selectedVenue && (
+                    <span className="inline-flex items-center gap-1 px-3 py-1 bg-accent/10 text-accent rounded-full">
+                        Venue: {selectedVenue}
+                        <button onClick={() => setSelectedVenue(null)} className="ml-1 hover:opacity-70">
+                            <XMarkIcon className="w-4 h-4" />
+                        </button>
+                    </span>
+                )}
+                {(selectedYear !== 'all' || selectedTopic !== 'all' || selectedVenue || selectedCard || searchQuery) && (
+                    <button
+                        onClick={() => {
+                            setSelectedYear('all');
+                            setSelectedTopic('all');
+                            setSelectedVenue(null);
+                            setSelectedCard(null);
+                            setSearchQuery('');
+                        }}
+                        className="inline-flex items-center gap-1 px-3 py-1 bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400 rounded-full hover:bg-red-200 dark:hover:bg-red-900/50 transition-colors"
+                    >
+                        Clear All
+                        <XMarkIcon className="w-4 h-4" />
+                    </button>
+                )}
             </div>
 
             {/* Publications Grid */}
@@ -478,15 +423,28 @@ export default function PublicationsList({ config, publications, embedded = fals
                         No publications found matching your criteria.
                     </div>
                 ) : (
-                    filteredPublications.map((pub, index) => (
-                        <motion.div
-                            key={pub.id}
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.4, delay: 0.1 * index }}
-                            className="bg-white dark:bg-neutral-900 p-6 rounded-xl shadow-sm border border-neutral-200 dark:border-neutral-800 hover:shadow-md transition-all duration-200"
-                        >
-                            <div className="flex flex-col md:flex-row gap-6">
+                    filteredPublications.map((pub, index) => {
+                        const prevPub = index > 0 ? filteredPublications[index - 1] : null;
+                        const showYearDivider = !prevPub || prevPub.year !== pub.year;
+
+                        return (
+                            <div key={pub.id}>
+                                {/* Year Divider */}
+                                {showYearDivider && (
+                                    <div className={`flex items-center gap-4 ${index > 0 ? 'mt-8 mb-6' : 'mb-6'}`}>
+                                        <div className="flex-shrink-0">
+                                            <span className="text-2xl font-bold text-accent">{pub.year}</span>
+                                        </div>
+                                        <div className="flex-grow h-px bg-gradient-to-r from-accent/50 to-transparent"></div>
+                                    </div>
+                                )}
+                                <motion.div
+                                    initial={{ opacity: 0, y: 20 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{ duration: 0.4, delay: 0.05 * index }}
+                                    className="bg-white dark:bg-neutral-900 p-6 rounded-xl shadow-sm border border-neutral-200 dark:border-neutral-800 hover:shadow-md transition-all duration-200"
+                                >
+                                    <div className="flex flex-col md:flex-row gap-6">
                                 {pub.preview && (
                                     <div className="w-full md:w-48 flex-shrink-0">
                                         <div
@@ -729,8 +687,10 @@ export default function PublicationsList({ config, publications, embedded = fals
                                     </AnimatePresence>
                                 </div>
                             </div>
-                        </motion.div>
-                    ))
+                                </motion.div>
+                            </div>
+                        );
+                    })
                 )}
             </div>
 

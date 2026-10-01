@@ -17,13 +17,19 @@ email = "qianli.wang@tu-berlin.de"
 location = "Berlin, Germany"
 location_url = "https://maps.google.com"
 location_details = [
-  "Room 2.052, MAR Building",
   "Marchstraße 23, 10587 Berlin, Germany"
 ]
 google_scholar = "https://scholar.google.com/citations?user=dKmUzp4AAAAJ"
 #orcid = "https://orcid.org"
 github = "https://github.com/qiaw99"
 linkedin = "https://www.linkedin.com/in/qianliwang/"
+
+# Google Scholar stats (update manually from your profile)
+[scholar]
+citations = 156
+h_index = 7
+i10_index = 5
+profile_url = "https://scholar.google.com/citations?user=dKmUzp4AAAAJ"
 
 [features]
 # Show a like button on the about page

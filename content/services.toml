@@ -1,28 +1,87 @@
-type = "card"
+type = "services"
 title = "Services"
 description = "Professional services and community involvement."
 
-[[items]]
-title = "Reviewer"
-subtitle = "EACL 2027, ICLR 2027"
-date = "2027"
+[[roles]]
+role = "Area Chair"
 
-[[items]]
-title = "Area Chair"
-subtitle = "EMNLP 2026 (Emergency)"
-date = "2026"
+[[roles.items]]
+conference = "NAACL"
+year = 2027
+icon = "/services/naacl2027.png"
 
-[[items]]
-title = "Reviewer"
-subtitle = "EMNLP 2026, ARR March, TrustNLP@ACL 2026, ACL 2026, EACL 2026"
-date = "2026"
+[[roles.items]]
+conference = "EMNLP"
+year = 2026
+note = "Emergency"
+icon = "/services/emnlp2026.png"
 
-[[items]]
-title = "Reviewer"
-subtitle = "IJCNLP-AACL 2025, EMNLP 2025, ACL 2025, COLING 2025, ICLR 2025, NAACL 2025"
-date = "2025"
+[[roles]]
+role = "Reviewer"
 
-[[items]]
-title = "Reviewer"
-subtitle = "ARR December"
-date = "2024"
+[[roles.items]]
+conference = "EACL"
+year = 2027
+icon = "/services/eacl2027.png"
+
+[[roles.items]]
+conference = "ICLR"
+year = 2027
+
+[[roles.items]]
+conference = "EMNLP"
+year = 2026
+icon = "/services/emnlp2026.png"
+
+[[roles.items]]
+conference = "ARR"
+year = 2026
+note = "March"
+
+[[roles.items]]
+conference = "TrustNLP@ACL"
+year = 2026
+
+[[roles.items]]
+conference = "ACL"
+year = 2026
+icon = "/services/acl2026.png"
+
+[[roles.items]]
+conference = "EACL"
+year = 2026
+icon = "/services/eacl2026.png"
+
+[[roles.items]]
+conference = "AACL"
+year = 2026
+icon = "/services/aacl2026.png"
+
+[[roles.items]]
+conference = "EMNLP"
+year = 2025
+icon = "/services/emnlp2025.png"
+
+[[roles.items]]
+conference = "ACL"
+year = 2025
+icon = "/services/acl2025.png"
+
+[[roles.items]]
+conference = "COLING"
+year = 2025
+icon = "/services/coling2025.png"
+
+[[roles.items]]
+conference = "ICLR"
+year = 2025
+
+[[roles.items]]
+conference = "NAACL"
+year = 2025
+icon = "/services/naacl2025.png"
+
+[[roles.items]]
+conference = "ARR"
+year = 2024
+note = "December"

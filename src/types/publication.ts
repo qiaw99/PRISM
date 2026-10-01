@@ -86,6 +86,7 @@ export type TopicType =
   | 'faithfulness'
   | 'interpretability'
   | 'multilingual'
+  | 'rag'
   | 'rationale'
   | 'misc';
 

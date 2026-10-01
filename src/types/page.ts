@@ -1,5 +1,5 @@
 export interface BasePageConfig {
-    type: 'about' | 'publication' | 'card' | 'text' | 'gallery';
+    type: 'about' | 'publication' | 'card' | 'text' | 'gallery' | 'services';
     title: string;
     description?: string;
 }
@@ -11,10 +11,22 @@ export interface GalleryPhoto {
     year?: string;
 }
 
+export interface TravelDestination {
+    name: string;
+    city: string;
+    country: string;
+    lat: number;
+    lng: number;
+    year: string;
+    conference?: string;
+}
+
 export interface GalleryPageConfig extends BasePageConfig {
     type: 'gallery';
     intro?: string;
     photos: GalleryPhoto[];
+    destinations?: TravelDestination[];
+    homeCity?: { name: string; lat: number; lng: number };
 }
 
 export interface PublicationPageConfig extends BasePageConfig {
@@ -40,4 +52,21 @@ export interface CardItem {
 export interface CardPageConfig extends BasePageConfig {
     type: 'card';
     items: CardItem[];
+}
+
+export interface ServiceItem {
+    conference: string;
+    year: number;
+    note?: string;
+    icon?: string;
+}
+
+export interface ServiceRole {
+    role: string;
+    items: ServiceItem[];
+}
+
+export interface ServicesPageConfig extends BasePageConfig {
+    type: 'services';
+    roles: ServiceRole[];
 }
