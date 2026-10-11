@@ -1,4 +1,4 @@
-[//]: # (**2026-10-12**: Two new papers have been submitted on &#40;1&#41; multilingual CoT faithfulness; &#40;2&#41; how plausible context misleads LLMs.)
+**2026-10-12**: Two new co-authored papers have been submitted on (1) multilingual CoT faithfulness; (2) LLM failures under misleading context.
 
 **2026-09-26**: Two new papers have been submitted on (1) SAE-based CoT faithfulness metrics; (2) locally sound yet globally insufficient traces in multi-hop reasoning.
 
@@ -11,12 +11,5 @@
 **2026-07-22**: One paper about the limitation of automated simulatability led by [Antonin Poché](https://antoninpoche.github.io/) is in submission.
 
 **2026-05-22**: Three new papers have been submitted on (1) LLM-as-a-Judge circuit discovery; (2) CoT faithfulness meta-evaluation under optimization; (3) multilingual self-explanation alignment.
-
-**2026-04-29**: Our paper about _quantization's effect on factual knowledge recall_ is finally accepted (Oral) at [TrustNLP](https://trustnlpworkshop.github.io/) workshop co-located at ACL 2026!
-
-
-**2026-04-07**: 🌟I am thrilled to shared that _**two**_ papers are accepted at _ACL 2026_ about (1) multilingual counterfactual evaluation (_Main_); (2) actionable mechanistic interpretability survey (_Findings_)! See you in San Diego 🇺🇸
-
-
 
 [News Archive](old_news/)

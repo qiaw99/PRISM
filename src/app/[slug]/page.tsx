@@ -7,20 +7,22 @@ import TextPage from '@/components/pages/TextPage';
 import CardPage from '@/components/pages/CardPage';
 import GalleryPage from '@/components/pages/GalleryPage';
 import ServicesPage from '@/components/pages/ServicesPage';
+import NewsPage from '@/components/pages/NewsPage';
 import {
     BasePageConfig,
     PublicationPageConfig,
     TextPageConfig,
     CardPageConfig,
     GalleryPageConfig,
-    ServicesPageConfig
+    ServicesPageConfig,
+    NewsPageConfig
 } from '@/types/page';
 
 import { Metadata } from 'next';
 
 export function generateStaticParams() {
     const config = getConfig();
-    const validTypes = ['page', 'publication', 'card', 'text', 'gallery', 'services']; // 所有有效的页面类型
+    const validTypes = ['page', 'publication', 'card', 'text', 'gallery', 'services', 'news'];
 
     return config.navigation
     .filter(nav => validTypes.includes(nav.type) && nav.target !== 'about')
@@ -68,6 +70,9 @@ export default async function DynamicPage({ params }: { params: Promise<{ slug: 
             {pageConfig.type === 'services' && (
                 <ServicesPage config={pageConfig as ServicesPageConfig} />
             )}
+            {pageConfig.type === 'news' && (
+                <NewsPageWrapper config={pageConfig as NewsPageConfig} />
+            )}
         </div>
     );
 }
@@ -82,4 +87,9 @@ function PublicationPage({ config }: { config: PublicationPageConfig }) {
 function TextPageWrapper({ config }: { config: TextPageConfig }) {
     const content = getMarkdownContent(config.source);
     return <TextPage config={config} content={content} />;
+}
+
+function NewsPageWrapper({ config }: { config: NewsPageConfig }) {
+    const content = getMarkdownContent(config.source);
+    return <NewsPage config={config} content={content} />;
 }

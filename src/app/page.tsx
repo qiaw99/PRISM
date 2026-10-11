@@ -16,7 +16,7 @@ import { BasePageConfig, PublicationPageConfig, TextPageConfig, CardPageConfig, 
 // Define types for section config
 interface SectionConfig {
   id: string;
-  type: 'markdown' | 'publications' | 'list';
+  type: 'markdown' | 'publications' | 'list' | 'news';
   title?: string;
   source?: string;
   filter?: string;
@@ -66,6 +66,24 @@ export default function Home() {
           return {
             ...section,
             items: newsData?.news || []
+          };
+        }
+        case 'news': {
+          const content = section.source ? getMarkdownContent(section.source) : '';
+          const items: NewsItem[] = [];
+          const lines = content.split('\n');
+          for (const line of lines) {
+            const dateMatch = line.match(/^\*\*(\d{4}-\d{2}-\d{2})[:：]?\*\*/);
+            if (dateMatch) {
+              const date = dateMatch[1];
+              const contentStart = line.indexOf('**', line.indexOf('**') + 2) + 2;
+              const newsContent = line.slice(contentStart).replace(/^[:：]?\s*/, '').trim();
+              items.push({ date, content: newsContent });
+            }
+          }
+          return {
+            ...section,
+            items: items.sort((a, b) => b.date.localeCompare(a.date))
           };
         }
         default:
@@ -174,6 +192,7 @@ export default function Home() {
                       />
                     );
                   case 'list':
+                  case 'news':
                     return (
                       <News
                         key={section.id}

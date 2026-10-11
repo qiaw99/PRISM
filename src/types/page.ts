@@ -1,5 +1,5 @@
 export interface BasePageConfig {
-    type: 'about' | 'publication' | 'card' | 'text' | 'gallery' | 'services';
+    type: 'about' | 'publication' | 'card' | 'text' | 'gallery' | 'services' | 'news';
     title: string;
     description?: string;
 }
@@ -69,4 +69,16 @@ export interface ServiceRole {
 export interface ServicesPageConfig extends BasePageConfig {
     type: 'services';
     roles: ServiceRole[];
+}
+
+export interface NewsItem {
+    date: string;
+    year: number;
+    month: number;
+    content: string;
+}
+
+export interface NewsPageConfig extends BasePageConfig {
+    type: 'news';
+    source: string;
 }

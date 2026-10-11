@@ -26,7 +26,7 @@ linkedin = "https://www.linkedin.com/in/qianliwang/"
 
 # Google Scholar stats (update manually from your profile)
 [scholar]
-citations = 156
+citations = 164
 h_index = 7
 i10_index = 5
 profile_url = "https://scholar.google.com/citations?user=dKmUzp4AAAAJ"
@@ -56,11 +56,11 @@ type = "page"
 target = "supervision"
 href = "/supervision"
 
-[[navigation]]
-title = "🎓 Teaching"
-type = "page"
-target = "teaching"
-href = "/teaching"
+#[[navigation]]
+#title = "🎓 Teaching"
+#type = "page"
+#target = "teaching"
+#href = "/teaching"
 
 #[[navigation]]
 #title = "Awards"
@@ -69,7 +69,7 @@ href = "/teaching"
 #href = "/awards"
 
 [[navigation]]
-title = "👜 Services"
+title = "🎯 Services"
 type = "page"
 target = "services"
 href = "/services"
@@ -96,4 +96,4 @@ title = "📸 Misc"
 target = "old_news"
 href = "/old_news"
 type = "page"
-title = "Old News"
+title = "👜 Old News"

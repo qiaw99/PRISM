@@ -1,4 +1,9 @@
 ## 2026
+
+**2026-04-29**: Our paper about _quantization's effect on factual knowledge recall_ is finally accepted (Oral) at [TrustNLP](https://trustnlpworkshop.github.io/) workshop co-located at ACL 2026!
+
+**2026-04-07**: 🌟I am thrilled to shared that _**two**_ papers are accepted at _ACL 2026_ about (1) multilingual counterfactual evaluation (_Main_); (2) actionable mechanistic interpretability survey (_Findings_)! See you in San Diego 🇺🇸
+
 **2026-03-17**: 🤖 One co-authored paper in collaboration with Uni Marburg is in submission. We propose SimXAI, a lightweight tool-augmented LLM-based conversational layer for ConvXAI systems, which enables better interaction quality and human understanding.
 
 **2026-01-06**: Two first-authored and three co-authored papers in submission about (1) _how quantization affects self-explanations_❓collaborated with [Pepa Atanasova](https://apepa.github.io/); (2) _feedback-driven iterative counterfactual refinement_; (3) _NLG evaluation trend survey_ led by [Jing Yang](https://jingyng.github.io/); (4) _claim-level grounding traceable generation_ led by [Bohao Chu](https://www.chubohao.com/); (5) _mechanistic interpretability application survey_ led by [Hengyuan Zhang](https://rattlesnakey.github.io/).

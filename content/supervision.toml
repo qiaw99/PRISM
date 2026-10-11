@@ -2,6 +2,13 @@ type = "card"
 title = "Supervision"
 
 # === Thesis Supervision ===
+#[[items]]
+#title = "Multilingual LLM Agents: A Survey of Capabilities, Benchmarks, and Open Problems"
+#subtitle = "Yilong Wang"
+#date = "WS2026"
+#tags = ["M.Sc."]
+#category = "thesis"
+
 [[items]]
 title = "Macro: Enhancing Multilingual Counterfactual Explanations through Alignment-as-Preference Optimization"
 subtitle = "Yilong Wang"
