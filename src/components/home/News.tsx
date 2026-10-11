@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { motion } from 'framer-motion';
 import ReactMarkdown from 'react-markdown';
 import rehypeRaw from 'rehype-raw';
@@ -79,13 +80,13 @@ export default function News({ items, title = 'News' }: NewsProps) {
 
             {/* News Archive Link */}
             <div className="mt-4 text-right">
-                <a
+                <Link
                     href="/old_news"
                     className="inline-flex items-center gap-1.5 text-sm text-accent hover:text-accent/80 font-medium transition-colors"
                 >
                     News Archive
                     <span className="text-xs">→</span>
-                </a>
+                </Link>
             </div>
         </motion.section>
     );
